@@ -4,6 +4,7 @@
 *.in
 *.out
 *.bin
+*.swp
 
 # Compiled Object files
 *.slo
