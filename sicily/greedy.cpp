@@ -20,11 +20,11 @@
 #include <set>
 #include <map>
 
-#define MAXN  310
+#define MAXN 10010
 #define INF 0x5f3759df //for magic
 
-//#define LOCAL
-#define DEBUG
+#define LOCAL
+//#define DEBUG
 #ifdef DEBUG
 #define debug(...) printf( __VA_ARGS__) 
 #else
@@ -43,40 +43,51 @@ template<class T> inline T min(T a, T b, T c, T d){return min(min(a, b), min(c, 
 template<class T> inline T max(T a, T b, T c, T d){return max(max(a, b), max(c, d));}
 template<class T> inline T sqr(T a){return a*a;}
 template<class T> inline T cub(T a){return a*a*a;}
-int f[MAXN][MAXN];
-int num[MAXN];
+
 int main()
 {
-#ifdef LOCAL
-    freopen("data.in", "r", stdin);
-#endif
-    int n;
-    while(scanf("%d", &n) != EOF) {
-        memset(f,0,sizeof(f));
-        for (int i=1; i<=n; i++) {
-            scanf("%d", &num[i]); num[i+n] = num[i];}
-        for (int i=1; i<=2*n; i++)
+#ifdef LOCAL 
+    freopen("data.in","r",stdin);  
+#endif 
+    int n, m;
+    int vis[MAXN];
+    int a[MAXN];
+    int b[MAXN];
+    while(scanf("%d%d", &n, &m), n!=0 && m!=0) {
+        memset(vis, 0, sizeof(vis));
+        for (int i=0; i<n; i++)
         {
-            debug("%d ", num[i]);
+            scanf("%d%d", &a[i], &b[i]);
         }
-        debug("\n");
-        for (int step = 2; step <=n; step++) {
-            for (int i=1; i<= 2*n; i++) {
-                int j = i + step -1;
-                //if (j > 2*n) break;
-                for (int k=i; k <= j; k++) {
-                    int temp = f[i][k] + f[k+1][j] + num[i] * num[k+1] * num[j+1];
-                    if (i != j && f[i][j] < temp)
-                        f[i][j] = temp;
-                }}}
-        int final = 0;
-        for (int i=1; i<=n; i++) {
-            if (f[i][i+n-1] > final) {
-                final = f[i][i+n-1];
-                debug("%d ", f[i][i+n-1]);
+        for (int i=0; i<n; i++)
+        {
+            for (int j=0; j<n -i - 1; j++)
+            {
+                if (b[j] > b[j+1] )
+                {
+                    swap (b[j+1], b[j]);
+                    swap (a[j+1], a[j]);
+                }
             }
         }
-        cout<<final<<endl;
+        for (int i=0; i<n; i++)
+        {
+            debug("%d %d\n", a[i], b[i]);
+        }
+        bool flag = 1;
+        long long acc = m;
+        for (int i=0; i<n; i++)
 
-    }
-}
+        {
+            if (acc < b[i])
+            {
+                flag = 0; break;
+            }
+            else 
+                acc += a[i];
+        }
+        if (flag)
+            cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
+
+    }}

@@ -20,11 +20,11 @@
 #include <set>
 #include <map>
 
-#define MAXN  310
+#define MAXN 300
 #define INF 0x5f3759df //for magic
 
-//#define LOCAL
-#define DEBUG
+#define LOCAL
+//#define DEBUG
 #ifdef DEBUG
 #define debug(...) printf( __VA_ARGS__) 
 #else
@@ -43,40 +43,49 @@ template<class T> inline T min(T a, T b, T c, T d){return min(min(a, b), min(c, 
 template<class T> inline T max(T a, T b, T c, T d){return max(max(a, b), max(c, d));}
 template<class T> inline T sqr(T a){return a*a;}
 template<class T> inline T cub(T a){return a*a*a;}
-int f[MAXN][MAXN];
-int num[MAXN];
+
 int main()
 {
-#ifdef LOCAL
-    freopen("data.in", "r", stdin);
+#ifdef LOCAL 
+    freopen("data.in","r",stdin);  
 #endif
-    int n;
-    while(scanf("%d", &n) != EOF) {
-        memset(f,0,sizeof(f));
-        for (int i=1; i<=n; i++) {
-            scanf("%d", &num[i]); num[i+n] = num[i];}
-        for (int i=1; i<=2*n; i++)
-        {
-            debug("%d ", num[i]);
-        }
-        debug("\n");
-        for (int step = 2; step <=n; step++) {
-            for (int i=1; i<= 2*n; i++) {
-                int j = i + step -1;
-                //if (j > 2*n) break;
-                for (int k=i; k <= j; k++) {
-                    int temp = f[i][k] + f[k+1][j] + num[i] * num[k+1] * num[j+1];
-                    if (i != j && f[i][j] < temp)
-                        f[i][j] = temp;
-                }}}
-        int final = 0;
-        for (int i=1; i<=n; i++) {
-            if (f[i][i+n-1] > final) {
-                final = f[i][i+n-1];
-                debug("%d ", f[i][i+n-1]);
+    int a[MAXN];
+    int t;
+    scanf("%d", &t);
+    while(t--) {
+        int n;
+        scanf("%d", &n);
+        for (int i=1; i<=n; i++)
+            scanf("%d", &a[i]);
+
+
+        int f[MAXN][MAXN];
+        f[0][0] = 0;
+        //    memset(f, 1, sizeof(f));
+        for (int i=1; i<=n; i++)
+            f[i][i] = 1;
+
+        for (int i=1; i<=n;i++) {
+            for (int j=i+1; j<=n; j++)
+            {
+                if ( j & 1) {
+                    if (f[i][j-1] == 2 && a[j] > a[j-1]) f[i][j] = f[i][j-1] + 1;
+                    else f[i][j] = 1;
+                }
+                else
+                {
+                    if (a[j] < a[j-1]) f[i][j] = f[i][j-1] + 1;
+                    else f[i][j] = 1;
+                }
             }
         }
+        int final = 0;
+        for (int i=1; i<=n; i++)
+        {
+            for (int j= 1; j<=n; j++)
+                if (f[i][j] > final)
+                    final = f[i][j];
+        }
         cout<<final<<endl;
-
     }
 }
