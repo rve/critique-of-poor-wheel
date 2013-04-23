@@ -77,6 +77,7 @@ template<class edge> struct Graph
 
 const int maxn = 110000;
 const int MOD = int(1e9) + 7;
+const double EPS = 1E-9;
 const double  PI = acos(-1.0); //M_PI;
 const int dx[] = {-1, 0, 1, 0};
 const int dy[] = {0, 1, 0, -1};
