@@ -121,27 +121,33 @@ int main()
           else {
             ta[q[i]][2].v = v[i] + ta[q[i]][0].v;
             ta[q[i]][2].w = v[i] * p[i] + ta[q[i]][0].w;
-            ta[q[i]][3].v = ta[q[i]][2].v + ta[q[i]][1].v;
-            ta[q[i]][3].w = ta[q[i]][2].w + ta[q[i]][1].w;
+            ta[q[i]][3].v = v[i] + ta[q[i]][1].v;
+            ta[q[i]][3].w = v[i] * p[i] + ta[q[i]][1].w;
             len[q[i]] = 4;
           }
         }
       }
-      disp(len+1, m+1);
       for (int i=1; i<=m; i++)
-          evar(ta[i][0].v);
+      {
+          for (int j=0; j<len[i]; j++)
+          {
+              {}//if (ta[i][j].v != 0) evar(ta[i][j].v);
+          }
+      }
       int f[maxn];
       memset(f, 0, sizeof(f));
       for (int i=1; i<=m; i++)
         if (q[i] == 0) {
           for (int j=n; j>=ta[i][0].v; j--) {
             for (int k=0; k<len[i]; k++) {
+                if (j > ta[i][k].v) {
               f[j] = max(f[j], f[j - ta[i][k].v] + ta[i][k].w);
+              evar(f[j]); evar(j);
+                }
+              //evar(f[j]);
             }}}
-      int ans = 0;
-      for (int j=n; j>=0; j--)
-        if (f[j] > ans) ans = f[j];
-      cout<<ans*10<<endl;
+      //disp(f, n);
+      cout<<f[n]<<endl;
 }
 }
 
