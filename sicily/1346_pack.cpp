@@ -22,7 +22,7 @@
 
 #define MAXN 3210
 #define INF 0x5f3759df //for magic
-#define LOCAL
+//#define LOCAL
 //#define DEBUG
 #ifdef DEBUG
 #define debug(...) printf( __VA_ARGS__) 
@@ -60,6 +60,8 @@ int main()
         N /= 10;
         indata temp[MAXC];
         int f[MAXN];
+        int map[MAXC * 3];
+        int vis[MAXC * 3];
         int acc = 0;
         sub s[MAXC * 3];
         int hash[MAXN][3];
@@ -77,6 +79,7 @@ int main()
                 }
             else {
                 acc ++;
+                map[acc] = acc;
                 s[acc].v = temp[i].a;
                 s[acc].w = temp[i].a * temp[i].b;
             }
