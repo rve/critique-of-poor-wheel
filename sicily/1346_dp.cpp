@@ -27,7 +27,7 @@
 
 using namespace std;
 //#define LOCAL
-#define DEBUG
+//#define DEBUG
 
 #define INF 0x3f3f3f3f
 #ifdef DEBUG
@@ -66,13 +66,13 @@ template <typename T> T gcd(T x, T y) {for (T t; x; t = x, x = y % x, y = t); re
 
 template<class edge> struct Graph
 {
-  vector<vector<edge> > adj;
-  Graph(int n) {adj.clear (); adj.resize (n + 5);}
-  Graph() {adj.clear (); }
-  void resize(int n) {adj.resize (n + 5); }
-  void add(int s, edge e){adj[s].push_back (e);}
-  void del(int s, edge e) {adj[s].erase (find (iter (adj[s]), e)); }
-  vector<edge>& operator [](int t) {return adj[t];}
+    vector<vector<edge> > adj;
+    Graph(int n) {adj.clear (); adj.resize (n + 5);}
+    Graph() {adj.clear (); }
+    void resize(int n) {adj.resize (n + 5); }
+    void add(int s, edge e){adj[s].push_back (e);}
+    void del(int s, edge e) {adj[s].erase (find (iter (adj[s]), e)); }
+    vector<edge>& operator [](int t) {return adj[t];}
 };
 
 const int maxn = 33000;
@@ -84,7 +84,7 @@ const int dy[] = {0, 1, 0, -1};
 
 int x[maxn];
 struct pack {
-  int v, w;
+    int v, w;
 } ta[maxn][4];
 int main()
 {
@@ -95,59 +95,60 @@ int main()
 #endif
     int n, m;
     while(scanf("%d%d", &n, &m) != EOF) {
-      int p[maxn], q[maxn], v[maxn];
-      int len[maxn];
-      int acc =0;
-      memset(len, -1, sizeof(len));
-      for (int i=1; i<=m; i++) {
-        scanf("%d%d%d", &v[i], &p[i], &q[i]);
-        v[i]/=10; 
-        if (q[i] == 0)
-          {
-            len[i] = 1;
-            ta[i][0].v = v[i];
-            ta[i][0].w = v[i] * p[i];
-          }
-        else
-          len[i] = 0;
-      }
-      for (int i=1; i<=m; i++) {
-        if (len[i] == 0) {
-          if (ta[q[i]][1].v == 0) {
-            ta[q[i]][1].v = v[i] + ta[q[i]][0].v;
-            ta[q[i]][1].w = v[i] * p[i] + ta[q[i]][0].w;
-            len[q[i]] = 2;
-          }
-          else {
-            ta[q[i]][2].v = v[i] + ta[q[i]][0].v;
-            ta[q[i]][2].w = v[i] * p[i] + ta[q[i]][0].w;
-            ta[q[i]][3].v = v[i] + ta[q[i]][1].v;
-            ta[q[i]][3].w = v[i] * p[i] + ta[q[i]][1].w;
-            len[q[i]] = 4;
-          }
+        n/=10;
+        int p[maxn], q[maxn], v[maxn];
+        int len[maxn];
+        int acc =0;
+        memset(len, -1, sizeof(len));
+        for (int i=1; i<=m; i++) {
+            scanf("%d%d%d", &v[i], &p[i], &q[i]);
+            v[i]/=10; 
+            if (q[i] == 0)
+            {
+                len[i] = 1;
+                ta[i][0].v = v[i];
+                ta[i][0].w = v[i] * p[i];
+            }
+            else
+                len[i] = 0;
         }
-      }
-      for (int i=1; i<=m; i++)
-      {
-          for (int j=0; j<len[i]; j++)
-          {
-              {}//if (ta[i][j].v != 0) evar(ta[i][j].v);
-          }
-      }
-      int f[maxn];
-      memset(f, 0, sizeof(f));
-      for (int i=1; i<=m; i++)
-        if (q[i] == 0) {
-          for (int j=n; j>=ta[i][0].v; j--) {
-            for (int k=0; k<len[i]; k++) {
-                if (j > ta[i][k].v) {
-              f[j] = max(f[j], f[j - ta[i][k].v] + ta[i][k].w);
-              evar(f[j]); evar(j);
+        for (int i=1; i<=m; i++) {
+            if (len[i] == 0) {
+                if (ta[q[i]][1].v == 0) {
+                    ta[q[i]][1].v = v[i] + ta[q[i]][0].v;
+                    ta[q[i]][1].w = v[i] * p[i] + ta[q[i]][0].w;
+                    len[q[i]] = 2;
                 }
-              //evar(f[j]);
-            }}}
-      //disp(f, n);
-      cout<<f[n]<<endl;
-}
+                else {
+                    ta[q[i]][2].v = v[i] + ta[q[i]][0].v;
+                    ta[q[i]][2].w = v[i] * p[i] + ta[q[i]][0].w;
+                    ta[q[i]][3].v = v[i] + ta[q[i]][1].v;
+                    ta[q[i]][3].w = v[i] * p[i] + ta[q[i]][1].w;
+                    len[q[i]] = 4;
+                }
+            }
+        }
+        for (int i=1; i<=m; i++)
+        {
+            for (int j=0; j<len[i]; j++)
+            {
+                {}//if (ta[i][j].v != 0) evar(ta[i][j].v);
+            }
+        }
+        int f[maxn];
+        memset(f, 0, sizeof(f));
+        for (int i=1; i<=m; i++)
+            if (q[i] == 0) {
+                for (int j=n; j>=ta[i][0].v; j--) {
+                    for (int k=0; k<len[i]; k++) {
+                        if (j >= ta[i][k].v) {
+                            f[j] = max(f[j], f[j - ta[i][k].v] + ta[i][k].w);
+                            evar(f[j]); evar(j);
+                        }
+                        //evar(f[j]);
+                    }}}
+        //disp(f, n);
+        cout<<f[n] * 10<<endl;
+    }
 }
 
