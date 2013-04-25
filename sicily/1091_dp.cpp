@@ -23,7 +23,7 @@
 #define MAXN 50010
 #define INF 0x5f3759df //for magic
 
-//#define LOCAL
+#define LOCAL
 //#define DEBUG
 #ifdef DEBUG
 #define debug(...) printf( __VA_ARGS__) 
