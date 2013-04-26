@@ -85,8 +85,6 @@ const int dy[] = {0, 1, 0, -1};
 int x[maxn];
 int main()
 {
-    //evar(a);
-    //disp(s, 3);
 #ifdef LOCAL 
     freopen("data.in","r",stdin);  
 #endif 
