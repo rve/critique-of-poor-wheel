@@ -1,6 +1,3 @@
-//#define LOCAL
-#define DEBUG
-
 #include <vector>
 #include <list>
 #include <map>
@@ -29,6 +26,9 @@
 #endif
 
 using namespace std;
+#define LOCAL
+//#define DEBUG
+
 #define INF 0x3f3f3f3f
 #ifdef DEBUG
 #define cvar(x) cerr << "<" << #x << ": " << x << ">"
@@ -88,4 +88,32 @@ int main()
 #ifdef LOCAL 
     freopen("data.in","r",stdin);  
 #endif
+    int n;
+    while(cin>>n, n != 0) {
+        for (int i=1; i<=n; i++)
+            cin>>x[i];
+        int dp[1050];
+        int a1 = 1;
+        memset(dp, 0, sizeof(dp));
+        dp[1] = 1;
+        dp[2] = (x[2] < x[1]) ? 2 :1;
+        for (int i=3; i<=n; i++)
+        {
+            dp[i] = 1;
+            for (int j=i-1; j>=1; j--)
+            {
+                if (!(dp[j] & 1) && x[i] > x[j])
+                    dp[i] = max(dp[i], dp[j] + 1);
+                if ((dp[j] & 1) && x[i] < x[j])
+                    dp[i] = max(dp[i], dp[j] + 1);
+                a1 = max(dp[i], a1);
+            }
+        }
+        disp(dp+1, n);
+
+
+        cout<<a1<<endl;
+    }
+
 }
+

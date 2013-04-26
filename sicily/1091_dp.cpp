@@ -23,7 +23,7 @@
 #define MAXN 50010
 #define INF 0x5f3759df //for magic
 
-#define LOCAL
+//#define LOCAL
 //#define DEBUG
 #ifdef DEBUG
 #define debug(...) printf( __VA_ARGS__) 
@@ -56,24 +56,27 @@ int main()
       scanf("%d", &n);
         int a[MAXN];
       for (int i=0; i<n; i++) scanf("%d", &a[i]);
-      int sum=0, ans = 0;
       int s1[MAXN], s2[MAXN];
       memset(s1, 0, sizeof(s1));
       memset(s2, 0, sizeof(s2));
+      int sum=0, ans = 0;
+      ans = -1 * INF;
       for (int i=0; i<n; i++) {
         sum += a[i];
         if (sum > ans) ans = sum;
-        if (sum < 0) sum =0;
         s1[i] = ans;
+        if (sum < 0) sum =0;
       }
       sum = ans = 0;
+      ans = -1 *INF;
       for (int i=n-1; i>=0; i--) {
         sum += a[i];
         if (sum > ans) ans = sum;
-        if (sum < 0) sum =0;
         s2[i] = ans;
+        if (sum < 0) sum =0;
       }
       sum = ans = 0;
+      ans = -1 *INF;
       for (int i=1; i<n; i++) {
         if (s1[i-1] + s2[i] > ans) ans = s1[i-1] + s2[i];
       }
