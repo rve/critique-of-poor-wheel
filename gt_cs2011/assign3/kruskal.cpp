@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <algorithm>
+#define LOCAL
 using namespace std;
  
 const int MAXN = 100;
@@ -48,7 +49,7 @@ void Kruskal(){
     int aa = find(pool[i].f);
     int bb = find(pool[i].t);
     if(aa == bb) continue;
-    printf("From <%d> to <%d>, cost %d\n", pool[i].f, pool[i].t, pool[i].v);
+    printf("Add edge from <%d> to <%d>, cost %d\n", pool[i].f, pool[i].t, pool[i].v);
     sum += pool[i].v;  
     uni(aa, bb);
   }
@@ -56,13 +57,16 @@ void Kruskal(){
  
  
 int main(){
+#ifdef LOCAL
+    freopen("assig.in", "r", stdin);
+#endif
   int cas;    scanf("%d", &cas);
   while(cas--){
     scanf("%d%d", &nn, &mm);
     for(int i = 0; i < mm; i++) 
       scanf("%d%d%d", &pool[i].f, &pool[i].t, &pool[i].v);
     Kruskal();
-    printf("Total cost: %d\n",sum);
+    printf("\nTotal cost: %d\n",sum);
   }
   return 0;
 }
