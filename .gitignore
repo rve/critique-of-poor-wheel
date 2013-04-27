@@ -6,8 +6,8 @@
 *.bin
 *.swp
 *.dSYM
-*#
 *.pyc
+*.tar.gz
 
 # Compiled Object files
 *.slo
