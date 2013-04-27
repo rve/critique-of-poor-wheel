@@ -1,0 +1,930 @@
+\documentclass[a4paper]{article}
+\usepackage{geometry}
+\usepackage{fontspec}
+\usepackage{listings}
+\lstset{breaklines,numbers=left,frame=shadowbox,extendedchars=false}
+\geometry{left=3cm,right=3cm,top=2.5cm,bottom=2.5cm}
+\setmainfont{WenQuanYi Micro Hei}
+\begin{document}  
+\title{ACM/ICPC TEMPLATE}  
+\author{NKU -> HOT}    
+% generates the title
+\maketitle
+% insert the table of contents
+\tableofcontents
+\section{Introduction}
+NKU -> HOT ACM-ICPC template \\
+Thanks all past teammates and contributers! 
+\section{Utility}
+\subsection{Java Template}
+\lstinputlisting{javatemp.java}
+\subsection{Java Multithread}
+BECAREFUL: CALL START FOR EACH THREAD!
+\lstinputlisting{javaThread.java}
+\subsection{Binary Search}
+MAKE SURE check(x) is monotone in [L,R) \\
+MAKE SURE check(L) == TRUE AND check(R) == FALSE FIRST!
+\lstinputlisting{binarysearch.cpp}
+\section{Graph Theroy}
+\subsection{Prim - O($N^2$)}
+\lstinputlisting{primNaive.cpp}
+\subsection{Prim- O(MlogN)}
+\lstinputlisting{primPQ.cpp}
+\subsection{Kruskal -O(MlogM)}
+\lstinputlisting{kruskal.cpp}
+\subsection{Dijkstra - O($N^2$)}
+\lstinputlisting{dijNaive.cpp}
+\subsection{Dijkstra - O(MlogN)}
+\lstinputlisting{dijPQ.cpp}
+\subsection{Dijkstra with heap}
+\lstinputlisting{dijHeap.cpp}
+\subsection{Bellman-Ford}
+\lstinputlisting{bellmanFord.cpp}
+\subsection{Shortest Path Faster Algorithm}
+\lstinputlisting{SPFA.cpp}
+\subsection{Network Flow - ISAP[NON-ORIGINAL]}
+\lstinputlisting{isap.cpp}
+\subsection{Bipartite Graph Matching}
+\lstinputlisting{matching.cpp}
+\subsection{Minimun Cost Flow [TO BE TESTED!]}
+\lstinputlisting{minimumcostflow.cpp}
+\subsection{Kuhn-Munkras [NON-ORIGINAL]}
+refined from http://blog.sina.com.cn/s/blog\_6ec5c2d00100vt8d.html
+\lstinputlisting{km.cpp}
+\subsection{Cut Vetrix and Edge}
+\lstinputlisting{cut.cpp}
+\subsection{Strongly Connected Components}
+\lstinputlisting{scc.cpp}
+\section{String Algorithm}
+\subsection{ELF Hash}
+\lstinputlisting{elfhash.cpp}
+\subsection {Aho-Corasick Automation}
+\lstinputlisting{ac.cpp}
+\subsection {Suffix array}
+\lstinputlisting{sa.cpp}
+\section{Data Struct}
+\subsection {Binary Indexed Tree}
+BECAREFUL WHILE I == 0 !!!
+\lstinputlisting{bit.cpp}
+\subsection {Inversion}
+\lstinputlisting{inversion.cpp}
+\subsection {BigInt Multiply with FFT}
+\lstinputlisting{mul.cpp}
+\section{Computational Geometry}
+\subsection{Constants}
+\begin{lstlisting}
+  const double eps=1e-12;
+  const double pi=acos(-1.0f);
+  const double INF=1.0/0.0f;
+  const double NEGINF=-1.0/0.0f;
+\end{lstlisting}
+\subsection{Compare Function}
+\begin{lstlisting}
+  inline bool equ0(const double& x){return fabs(x)<eps;}
+  inline bool equ(const double& x,const double& y){return fabs(x-y)<eps;}
+  inline bool ls(const double& x,const double& y){return x+eps<y;}
+  inline bool gr(const double& x,const double& y){return x-eps>y;}
+  inline bool greq(const double& x,const double& y){return x+eps>=y;}
+  inline bool lseq(const double& x,const double& y){return x-eps<=y;}
+\end{lstlisting}
+\subsection{3D Point and Vector}
+\begin{lstlisting}
+  struct Point{
+    double x,y,z;
+    explicit Point(const double& a=0,const double& b=0,const double& c=0):x(a),y(b),z(c){}
+    Point(const Point& p):x(p.x),y(p.y),z(p.z){}
+    Point operator-() const{return Point(-x,-y,-z);}
+    Point operator-(const Point& a) const{return Point(x-a.x,y-a.y,z-a.z);}
+    Point operator+(const Point& a) const{return Point(x+a.x,y+a.y,z+a.z);}
+    Point operator*(const double& s) const{return Point(s*x,s*y,s*z);}
+    double sqlen() const{return x*x+y*y+z*z;}
+    double len() const{return sqrt(sqlen());}
+    void norm(){double l=len();x/=l;y/=l;z/=l;}
+  };
+  typedef Point Vec;
+\end{lstlisting}
+\subsection{3D Utility Functions}
+\subsubsection{3D dot and 3D vector cross}
+\begin{lstlisting}
+  inline double dot(const Vec& u,const Vec& v) 
+  {return u.x*v.x + u.y*v.y + u.z*v.z;}
+  inline Vec cross(const Vec& u,const Vec& v){
+    return Vec(u.y*v.z-u.z*v.y,u.z*v.x-u.x*v.z,u.x*v.y-u.y*v.x);
+  }
+\end{lstlisting}
+\subsubsection{3D line - line min distance}
+POJ 2852
+\begin{lstlisting}
+  inline bool line_mindist(const Point& p0,const Vec& d0,
+  const Point& p1,const Vec& d1,
+  double* t,double* k){
+    double a=dot(d0,d0),b=-dot(d0,d1),c=-dot(d1,d1),d=dot(d0,p1-p0),
+    e=dot(d1,p1-p0);
+    double det=a*c+b*b;
+    if(equ0(det)) return false;
+    *t=(d*c-b*e)/det;
+    *k=(a*e+b*d)/det;
+    return true;
+  }
+\end{lstlisting}
+\subsubsection{Sphere coord}
+\begin{lstlisting}
+  inline double deg2grad(const double& d){return d*pi/180.0;}
+  inline Vec sphere_coord(const double& ele,const double& az){
+    double x,y,z,r;
+    z=sin(ele);
+    r=cos(ele);x=r*cos(az);y=r*sin(az);
+    return Vec(x,y,z);
+  }
+\end{lstlisting}
+\subsection{2D Point and Vector}
+\begin{lstlisting}
+  struct Point{
+    double x,y;
+    explicit Point(const double& a=0,const double& b=0):x(a),y(b){}
+    Point(const Point& p):x(p.x),y(p.y){}
+    Point& operator=(const Point& p){x=p.x;y=p.y;return *this;}
+    Point operator-() const{return Point(-x,-y);}
+    Point operator-(const Point& a) const{return Point(x-a.x,y-a.y);}
+    Point operator+(const Point& a) const{return Point(x+a.x,y+a.y);}
+    Point operator*(const double& s) const{return Point(s*x,s*y);}
+    double sqlen() const{return x*x+y*y;}
+    double len() const{return sqrt(sqlen());}
+    void norm(){double l=len();x/=l;y/=l;}
+  };
+  typedef Point Vec;
+\end{lstlisting}
+\subsection{2D Utility Functions}
+\subsubsection{2D dot and 2D scalar cross}
+\begin{lstlisting}
+  inline double dot(const Vec& u,const Vec& v){return u.x*v.x + u.y*v.y;}
+  inline double cross(const Vec& u,const Vec& v){return u.x*v.y - u.y*v.x;}
+\end{lstlisting}
+\subsubsection{2D triple point coline}
+\begin{lstlisting}
+  inline bool coline(const Point& a,const Point& b,const Point& c){
+    Vec u=b-a,v=c-a;
+    return equ0(cross(u,v));
+  }
+\end{lstlisting}
+\subsubsection{2D segment - segment overlap}
+\begin{lstlisting}
+  inline bool seg_overlap(const Point& a1,const Point& a2,const Point& b1,const Point& b2){
+    if(coline(a1,a2,b1) && coline(a1,a2,b2)){
+      double k1,k2;
+      Vec axis=a2-a1;
+      Vec temp=b1-a1;
+      if(equ0(axis.y)){
+        k1=temp.x/axis.x;
+        temp=b2-a1;
+        k2=temp.x/axis.x;
+      }
+      else{
+        k1=temp.y/axis.y;
+        temp=b2-a1;
+        k2=temp.y/axis.y;
+      }
+      if((gr(k1,1.0f) && gr(k2,1.0f)) || (ls(k1,0.0f) && ls(k2,0.0f))) return false;
+      else return true;
+    }
+    else return false;
+  }
+\end{lstlisting}
+\subsubsection{2D angle difference between two vectors}
+\begin{lstlisting}
+  //CCW for positive
+  inline double angle_diff(const Vec& from,const Vec& to){
+    Vec nfrom=from;nfrom.norm();
+    Vec nto=to;nto.norm();
+    double d=dot(nfrom,nto),c=cross(nfrom,nto),a=acos(d);
+    if(ls(c,0.0f)) return 2.0f*pi-a;else return a;
+  }
+\end{lstlisting}
+\subsubsection{2D point - line distance}
+\begin{lstlisting}
+  inline double dist2line(const Point& p,const Point& o,const Vec& d){
+    Vec u=p-o,nd=d;nd.norm();
+    double proj=dot(u,nd);
+    return sqrt(u.sqlen()-proj*proj);
+  }
+\end{lstlisting}
+\subsubsection{2D point - circle tangent}
+POJ 1375
+\begin{lstlisting}
+  inline int point_circle_tan(const Point& p,const Point& C,const double& r,Point* tps){
+    Vec v=C-p;double cdist=v.len();
+    if(ls(cdist,r)) return 0;
+    else if(equ(cdist,r)){tps[0]=p;return 1;}
+    double l=sqrt(cdist*cdist-r*r);v.norm();v=v*l;
+    double a=asin(r/cdist);
+    Vec u=vec_rotate(v,a);tps[0]=p+u;
+    u=vec_rotate(v,-a);tps[1]=p+u;
+    return 2;
+  };
+\end{lstlisting}
+\subsubsection{2D circle - circle tangent}
+require circles no touch, no intersect \\
+POJ 2416
+\begin{lstlisting}
+  struct Seg{
+    Point p0,p1;
+    Seg(const Point& m=Point(),const Point& n=Point()):p0(m),p1(n){
+    }
+  };
+
+  inline void tan_2circle(const Point& C0,const double& R0,
+  const Point& C1,const double& R1,
+  Seg* segs){
+    Point c0=C0,c1=C1;double r0=R0,r1=R1;
+    if(gr(R1,R0)){swap(c0,c1);swap(r0,r1);}
+    Vec v=c1-c0;double cdist=v.len();
+
+    Point p=c0+v*(r0/(r1+r0));
+    Point t[2];
+    point_circle_tan(p,c0,r0,t);
+    Vec u=p-t[0];Point w;
+    w=t[0]+u*((r1+r0)/r0);
+    segs[0]=Seg(t[0],w);
+    u=p-t[1];w=t[1]+u*((r1+r0)/r0);
+    segs[1]=Seg(t[1],w);
+
+    if(equ(r0,r1)){
+      u=v;u.norm();u=u*r0;
+      Vec offset=vec_rotate(u,pi*0.5);
+      segs[2]=Seg(c0+offset,c1+offset);
+      offset=vec_rotate(u,-pi*0.5);
+      segs[3]=Seg(c0+offset,c1+offset);
+    }
+    else{
+      p=c0+v*(r0/(r0-r1));
+      Point k[2];
+      point_circle_tan(p,c1,r1,t);point_circle_tan(p,c0,r0,k);
+      segs[2]=Seg(t[0],k[0]);
+      segs[3]=Seg(t[1],k[1]);
+    }
+  }
+\end{lstlisting}
+\subsubsection{2D circle - polygon intersection area}
+POJ 3675 \\
+schindlerlee, thanks
+\begin{lstlisting}
+  //CCW
+  inline double poly_area(const vector<Point>& p){
+    Point prev=p[0],cur;
+    double area=0;
+    for(int i=1;i<p.size();++i){
+      cur=p[i];
+      area+=0.5 * cross(prev,cur);
+      prev=cur;
+    }
+    return area;
+  }
+
+  double R;
+  Point C;
+  vector<Point> P;
+  int main(){
+    while(scanf("%lf",&R)==1){
+    P.clear();
+    int N;
+    scanf("%d",&N);
+    for(int i=0;i<N;++i){
+      double x,y;scanf("%lf%lf",&x,&y);
+      P.push_back(Point(x,y));
+    }
+    C=Point(0.0f,0.0f);
+    P.push_back(P[0]);
+    double area=0.0f;
+    double t,k;
+    for(int i=0;i<P.size()-1;++i){
+      Point s0=P[i],s1=P[i+1];
+      if(line_circle_intersect(s0,s1-s0,C,R,&t,&k)){
+        Point p0=s0+(s1-s0)*t;
+        Point p1=s0+(s1-s0)*k;
+        if(lseq(k,0.0f) || greq(t,1.0f)){
+          area+=0.5 * R*R * angle_diff(s0,s1);
+        }
+        else if(lseq(t,0.0f) && greq(k,1.0f)){
+          area+=0.5 * cross(s0,s1);
+        }
+        else if(lseq(t,0.0f) && greq(k,0.0f) && lseq(k,1.0f)){
+          area+=0.5 * cross(s0,p1);
+          area+=0.5 * R*R * angle_diff(p1,s1);
+        }
+        else if(greq(k,1.0f) && greq(t,0.0f) && lseq(t,1.0f)){
+          area+=0.5 * R*R * angle_diff(s0,p0);
+          area+=0.5 * cross(p0,s1);
+        }
+        else{
+          area+=0.5 * R*R * angle_diff(s0,p0);
+          area+=0.5 * cross(p0,p1);
+          area+=0.5 * R*R * angle_diff(p1,s1);
+        }
+      }
+      else area+=0.5f * R*R * angle_diff(s0,s1);
+    }
+    printf("%.2f\n",fabs(area));
+  }//while case
+  return 0;
+}
+\end{lstlisting}
+\subsubsection{2D vector normal}
+return two normalized vectors perp to the v  \\
+(CCW,CW)
+\begin{lstlisting}
+  inline pair<Vec,Vec> vec_normal(const Vec& v){
+    Vec u=v;u.norm();
+    Vec CCW=Vec(-u.y,u.x),CW=Vec(u.y,-u.x);
+    return make_pair(CCW,CW);
+  }
+\end{lstlisting}
+\subsubsection{2D vector rotation}
+CCW for positive angle
+\begin{lstlisting}
+  inline Vec vec_rotate(const Vec& v,const double& a){
+    double s=sin(a),c=cos(a);
+    return Vec(c*v.x-s*v.y,s*v.x+c*v.y);
+  }
+  inline Vec vec_rotate_left(const Vec& v){return Vec(-v.y,v.x);}
+  inline Vec vec_rotate_right(const Vec& v){return Vec(v.y,-v.x);}
+\end{lstlisting}
+\subsection{2D Intersection}
+\subsubsection{ray - ray intersection}
+\begin{lstlisting}
+  inline bool ray_intersect(const Point& p,const Vec& u,
+  const Point& q,const Vec& v,
+  double* t,double* k){
+    double a=u.x,b=-v.x,c=u.y,d=-v.y;
+    double e=q.x-p.x,f=q.y-p.y;
+    double det=a*d-b*c;
+    if(equ0(det)) return false;
+    else{
+      *t=(e*d-b*f)/det;
+      *k=(a*f-e*c)/det;
+      return true;
+    }
+  }
+\end{lstlisting}
+\subsubsection{line - circle intersection}
+\begin{lstlisting}
+  inline bool line_circle_intersect(const Point& o,const Vec& d,
+  const Point& C,const double& R,
+  double* t,double* k){
+    Vec delt=o-C;
+    double a=d.sqlen(),b=2*dot(delt,d),c=delt.sqlen()-R*R;
+    double x=b*b-4*a*c;
+    if(ls(x,0.0f)) return false;
+    x=sqrt(x);*t=(-b-x)/(2*a);*k=(-b+x)/(2*a);
+    return true;
+  }
+\end{lstlisting}
+\subsection{Computational Geometry Topics}
+\subsubsection{2D convex hull}
+
+O(NlogN) \\ 
+monotone chain \\ 
+vertex points only: modify the 'left' to strict, otherwise colinear points included. \\
+CCW order \\
+POJ 2187 \\
+\begin{lstlisting}
+  const int MAXP=50000;
+  Point P[MAXP];
+  int N;
+
+  int H[MAXP],lower[MAXP];
+  bool vis[MAXP];
+  int top;
+  int monotone_chain(){
+    memset(vis,0,sizeof(vis));
+    int utop=0,ltop=0;
+    for(int i=N-1;i>=0;--i){
+      if(utop<2) H[utop++]=i;
+      else{
+        while(utop>1 && cross(P[H[utop-1]]-P[H[utop-2]],P[i]-P[H[utop-1]]) <= 0) --utop;
+        H[utop++]=i;
+      }
+    }
+    for(int i=0;i<utop;++i) vis[H[i]]=true;
+    for(int i=0;i<N;++i){
+      if(ltop<2) lower[ltop++]=i;
+      else{
+        while(ltop>1 && cross(P[lower[ltop-1]]-P[lower[ltop-2]],P[i]-P[lower[ltop-1]]) <= 0)
+        --ltop;
+        lower[ltop++]=i;
+      }
+    }
+    for(int i=0;i<ltop;++i) if(!vis[lower[i]]) H[utop++]=lower[i];
+    return utop;
+  }
+\end{lstlisting}
+\subsubsection{3D convec hull}
+O(N2) \\
+incremental method \\
+POJ 3528 \\
+schindlerlee, thanks.
+\begin{lstlisting}
+  //CCW
+  struct Face{
+    Point p0,p1,p2;
+    Face(const Point& a=Point(),const Point& b=Point(),const Point& c=Point()):
+    p0(a),p1(b),p2(c){
+    }
+  };
+  inline Vec face_normal(const Face& f){
+    Vec u=f.p1-f.p0;
+    Vec v=f.p2-f.p0;
+    Vec n=cross(u,v);
+    n.norm();
+    return n;
+  }
+  inline bool point_above_face(const Point& p,const Face& f){
+    Vec u=p-f.p0;
+    Vec n=face_normal(f);
+    return gr(dot(u,n),0.0f);
+  }
+
+
+  int edge[MAXP][MAXP];
+  int main(){
+    int N;
+    vector<Point> Points;
+    vector<Face> CH;
+    while(scanf("%d",&N)==1){
+    for(int i=0;i<N;++i){
+      double x,y,z;
+      scanf("%lf%lf%lf",&x,&y,&z);
+      Points.push_back(Point(x,y,z,i));
+    }
+    //special case
+
+    CH.push_back(Face(Points[0],Points[1],Points[2]));
+    CH.push_back(Face(Points[2],Points[1],Points[0]));
+    
+    for(int i=3;i<Points.size();++i){
+      Point cur=Points[i];
+      for(int j=0;j<CH.size();++j){
+        Face f=CH[j];
+        if(point_above_face(cur,f)){
+          edge[f.p0.id][f.p1.id]=1;
+          edge[f.p1.id][f.p2.id]=1;
+          edge[f.p2.id][f.p0.id]=1;
+        }
+        else{
+          edge[f.p0.id][f.p1.id]=-1;
+          edge[f.p1.id][f.p2.id]=-1;
+          edge[f.p2.id][f.p0.id]=-1;
+        }
+      }
+      vector<Face> T;
+      for(int j=0;j<CH.size();++j){
+        Face f=CH[j];
+        if(edge[f.p0.id][f.p1.id]==1){
+          if(edge[f.p1.id][f.p0.id]==-1) T.push_back(Face(f.p0,f.p1,cur));
+          if(edge[f.p2.id][f.p1.id]==-1) T.push_back(Face(f.p1,f.p2,cur));
+          if(edge[f.p0.id][f.p2.id]==-1) T.push_back(Face(f.p2,f.p0,cur));
+        }
+        else{
+          T.push_back(f);
+        }
+      }
+      swap(CH,T);
+    }
+    double area=0.0f;
+    for(int i=0;i<CH.size();++i){
+      Face f=CH[i];
+      Vec crs=cross(f.p1-f.p0,f.p2-f.p0);
+      area+=0.5f * crs.len();
+    }
+    printf("%.3f\n",area);
+  }
+  return 0;
+  }
+\end{lstlisting}
+\subsubsection{Max distance point pair}
+O(NlogN) \\
+applied on the convex hull CCW ordered points \\
+rotating calipers \\
+no explicit angle calculation \\
+POJ 2187; TJU 2847
+\begin{lstlisting}
+inline int Next(int x){return (x+1)%top;}
+int max_dist;
+void rc(){
+  int s;
+  int p=0,q=Next(p);
+  while(area(P[H[p]],P[H[Next(p)]],P[H[Next(q)]]) > 
+  area(P[H[p]],P[H[Next(p)]],P[H[q]])){
+    q=Next(q);
+  }
+  s=p;
+  do{
+    Vec d=P[H[p]]-P[H[q]];int temp=d.sqlen();
+    max_dist=max(max_dist,temp);
+    int np=p,nq=q;
+    if(area(P[H[p]],P[H[Next(p)]],P[H[Next(q)]]) > 
+    area(P[H[p]],P[H[Next(p)]],P[H[q]])) nq=Next(q);
+    if(area(P[H[q]],P[H[Next(q)]],P[H[Next(p)]]) > 
+    area(P[H[q]],P[H[Next(q)]],P[H[p]])) np=Next(p);
+    if(nq!=q) q=Next(q);
+    else p=Next(p);
+  } while(q!=Next(s));
+}
+\end{lstlisting}
+\subsubsection{closed point pair among two polygons}
+O(NlogN) \\
+rotating calipers \\
+no explicit angle calculation \\
+POJ 3608
+utility functions \\
+compare functor for monotone chain convec hull
+\begin{lstlisting}
+struct comp{
+  bool operator()(const Point& a,const Point& b)const{
+    if(equ(a.x,b.x)) return ls(a.y,b.y);else return ls(a.x,b.x);
+  }
+};
+\end{lstlisting}
+\begin{lstlisting}
+inline double area(const Point& a,const Point& b,const Point& c){return cross(b-a,c-a);}
+
+const int MAXP=10000;
+int M,N;
+Point P[MAXP],Q[MAXP];
+
+double mindist;
+\end{lstlisting}
+utility functions to step to the next vertex. used in rotating calipers
+\begin{lstlisting}
+inline int nextp(int i){return (i+1)%M;}
+inline int nextq(int i){return (i+1)%N;}
+\end{lstlisting}
+check if a point can perp project on a segment
+\begin{lstlisting}
+inline bool point_over_seg(const Point& p,const Point& a,const Point& b){
+  Vec u=b-a;double l=u.len();
+  u.norm();
+  double proj=dot(u,p-a);
+  double t=proj/l;
+  return ls(t,1.0f) && gr(t,0.0f);
+}
+\end{lstlisting}
+check if two segments' perp projection overlap
+\begin{lstlisting}
+inline bool seg_over_seg(const Point& a,const Point& b,
+                         const Point& c,const Point& d){
+  Vec u=b-a;
+  Vec r0=vec_rotate_left(u),r1=vec_rotate_left(u);
+  double t,k;
+  if(ray_intersect(a,r0,c,d-c,&t,&k)) if(ls(k,1) && gr(k,0)) return true;
+  if(ray_intersect(b,r1,c,d-c,&t,&k)) if(ls(k,1) && gr(k,0)) return true;
+  Vec v=d-c;
+  r0=vec_rotate_left(v);r1=vec_rotate_left(v);
+  if(ray_intersect(c,r0,a,b-a,&t,&k)) if(ls(k,1) && gr(k,0)) return true;
+  if(ray_intersect(d,r1,a,b-a,&t,&k)) if(ls(k,1) && gr(k,0)) return true;
+  return false;
+}
+\end{lstlisting}
+return two parallel segments' distance
+\begin{lstlisting}
+inline double dist_2seg(const Point& a,const Point& b,
+                        const Point& c,const Point& d){
+  return dist2line(c,a,b-a);
+}
+\end{lstlisting}
+rotating calipers
+\begin{lstlisting}
+void rc(){
+  int p,q;
+  int sp;
+  int cnt=0;
+  double f;
+  f=10001;
+  for(int i=0;i<M;++i) if(P[i].x<f){f=P[i].x;p=i;}
+  f=-10001;
+  for(int i=0;i<N;++i) if(Q[i].x>f){f=Q[i].x;q=i;}
+  while(gr(area(P[p],P[nextp(p)],Q[nextq(q)]),area(P[p],P[nextp(p)],Q[q]))) q=nextq(q);
+  sp=p;
+
+  if(point_over_seg(Q[q],P[p],P[nextp(p)]))
+    mindist=min(mindist,dist2line(Q[q],P[p],P[nextp(p)]-P[p]));
+  else mindist=min(mindist,(P[p]-Q[q]).len());
+  do{
+    int np=p,nq=q;
+    if(gr(area(P[p],P[nextp(p)],Q[nextq(q)]),area(P[p],P[nextp(p)],Q[q]))) nq=nextq(q);
+    if(gr(area(Q[q],Q[nextq(q)],P[nextp(p)]),area(Q[q],Q[nextq(q)],P[p]))) np=nextp(p);
+    if(nq==q && np!=p){
+      if(point_over_seg(Q[q],P[p],P[nextp(p)]))
+        mindist=min(mindist,dist2line(Q[q],P[p],P[nextp(p)]-P[p]));
+      else mindist=min(mindist,(Q[q]-P[nextp(p)]).len());
+      p=nextp(p);
+    }
+    else if(np==p && nq!=q){
+      if(point_over_seg(P[p],Q[q],Q[nextq(q)]))
+        mindist=min(mindist,dist2line(P[p],Q[q],Q[nextq(q)]-Q[q]));
+      else mindist=min(mindist,(P[p]-Q[nextq(q)]).len());
+      q=nextq(q);
+    }
+    else if(np==p && nq==q){
+      if(seg_over_seg(P[p],P[nextp(p)],Q[q],Q[nextq(q)]))
+        mindist=min(mindist,dist_2seg(P[p],P[nextp(p)],Q[q],Q[nextq(q)]));
+      else{
+        //mindist=min(mindist,(P[nextp(p)]-Q[nextq(q)]).len());
+        mindist=min(mindist,(P[nextp(p)]-Q[q]).len());
+        //mindist=min(mindist,(Q[nextq(q)]-P[p]).len());
+      }
+      p=nextp(p);
+    }
+    if(p==sp) ++cnt;
+  }while(!(cnt>1&&p==nextp(sp)));
+}
+\end{lstlisting}
+\subsubsection{closed point pair}
+O(NlogN) \\
+sweep line \\ 
+POJ 3714; ZOJ 2107 \\
+compx, compy, compare functors used in sorted point sequence and BST respectively
+\begin{lstlisting}
+const int MAXN=200002;
+
+Point P[MAXN];
+int N;
+struct compx{
+  bool operator()(const Point& a,const Point& b)const{
+    if(a.x==b.x) return ls(a.y,b.y);
+    else return ls(a.x,b.x);
+  }
+};
+struct compy{
+  bool operator()(const Point& a,const Point& b)const{
+    if(a.y==b.y) return ls(a.x,b.x);
+    else return ls(a.y,b.y);
+  }
+};
+\end{lstlisting}
+sweep line algorithm
+\begin{lstlisting}
+double mindist;
+
+Point eventp;
+typedef set<Point,compy> Box;
+typedef Box::iterator BoxIter;
+void sweepline(){
+  sort(P,P+2*N,compx());
+  mindist=INF;
+  int l=0;
+  Box box;
+  for(int i=0;i<2*N;++i){
+    eventp=P[i];
+    double x=eventp.x-mindist,negy=eventp.y-mindist,posy=eventp.y+mindist;
+
+    while(l<i && ls(P[l].x,x)){
+      box.erase(P[l]);
+      ++l;
+    }
+    
+    BoxIter a=box.lower_bound(Point(x,negy));
+    BoxIter b=box.lower_bound(Point(x,posy));
+    for(BoxIter iter=a;iter!=b;iter++){
+      Vec d=*iter - eventp;
+      if(iter->color != eventp.color) mindist=min(mindist,d.len());
+    }
+    box.insert(eventp);
+  }
+}
+\end{lstlisting}
+\subsubsection{closed circle pair}
+O(NlogN) \\ 
+sweep line  \\
+HDU 3124  \\
+data structure and compare functors
+\begin{lstlisting}
+struct Circle{
+  Point c;double r;
+  Circle(const Point& a=Point(),const double& b=0):c(a),r(b){
+  }
+};
+const int MAXN=50000;
+Circle C[MAXN];
+int N;
+Point P[MAXN];
+
+struct compx{
+  bool operator()(const Point& a,const Point& b)const{
+    if(equ(a.x,b.x)) return ls(a.y,b.y);
+    else return ls(a.x,b.x);
+  }
+};
+struct compy{
+  bool operator()(const Point& a,const Point& b)const{
+    if(equ(a.y,b.y)) return ls(a.x,b.x);
+    else return ls(a.y,b.y);
+  }
+};
+\end{lstlisting}
+sweep line algorithm, use circle's top and bottom vertex as event
+point
+\begin{lstlisting}
+double mindist;
+
+Point eventp;
+typedef set<Point,compy> Box;
+typedef Box::iterator BoxIter;
+void sweepline(){
+  sort(P,P+N,compx());
+  mindist=INF;
+  int l=0;
+  Box box;
+  for(int i=0;i<N;++i){
+    eventp=P[i];
+    Circle cir=C[eventp.c];
+    double x=eventp.x-mindist,negy=cir.c.y-cir.r-mindist,posy=cir.c.y+cir.r+mindist;
+
+    while(l<i && ls(C[P[l].c].c.x+C[P[l].c].r,x)){
+      Circle tmp=C[P[l].c];
+      box.erase(Point(tmp.c.x,tmp.c.y-tmp.r));
+      box.erase(Point(tmp.c.x,tmp.c.y+tmp.r));
+      ++l;
+    }
+    
+    if(!box.empty()){
+      BoxIter begin=box.lower_bound(Point(NEGINF,negy));
+      BoxIter end=box.lower_bound(Point(NEGINF,posy));
+      for(BoxIter iter=begin;iter!=end;++iter){
+        Circle tmp=C[iter->c];
+        double d=(tmp.c-cir.c).len() - tmp.r - cir.r;
+        mindist=min(mindist,d);
+      }
+    }
+    box.insert(Point(cir.c.x,cir.c.y+cir.r,eventp.c));
+    box.insert(Point(cir.c.x,cir.c.y-cir.r,eventp.c));
+  }
+}
+\end{lstlisting}
+main function, save circle's top and bottom vertex
+\begin{lstlisting}
+int main(){
+  int T;scanf("%d",&T);
+  while(T-->0){
+    scanf("%d",&N);
+    for(int i=0;i<N;++i){
+      int x,y,r;
+      scanf("%d%d%d",&x,&y,&r);
+      C[i].c.x=x;C[i].c.y=y;C[i].r=r;
+      P[i]=Point(C[i].c.x-C[i].r,C[i].c.y,i);
+    }
+    sweepline();
+    printf("%.6f\n",mindist);
+  }
+  return 0;
+}
+\end{lstlisting}
+\subsubsection{circle hierarchy}
+O(NlogN) \\
+sweep line \\ 
+event point is the most left and right vertex of a circle  \\
+implicit store the interval cuted by the current sweep line. \\
+POJ 2932 
+data structures and compare functors \\
+\begin{lstlisting}
+const int MAXC=40000;
+const int MAXN=2*MAXC;
+struct Circle{
+  Point c;double r;
+  Circle(const Point& a=Point(),const double& b=0):c(a),r(b){}
+};
+//a extra INF radius circle
+Circle circle[MAXC+1];
+Point P[MAXN];
+int N;
+Point eventp;
+
+struct compx{
+  bool operator()(const Point& a,const Point& b)const{
+    if(equ(a.x,b.x)) return ls(a.y,b.y);else return ls(a.x,b.x);
+  }
+};
+
+struct Interval{
+  int p;
+  int i,j;
+  bool lowi,lowj;
+  Interval(int par=0,int a=0,bool a0=false,int b=0,bool b0=false):
+    p(par),i(a),j(b),lowi(a0),lowj(b0){}
+};
+inline pair<double,double> get_itv(const Circle& c,const double& x){
+  double d=fabs(c.c.x-x);
+  double del=c.r*c.r - d*d;
+  if(lseq(del,0.0f)) del=0.0f;
+  del=sqrt(del);
+  return make_pair(c.c.y-del,c.c.y+del);
+}
+struct compcircle{
+  bool operator()(const Interval& a,const Interval& b)const{
+    pair<double,double> itv0=get_itv(circle[a.i],eventp.x);
+    pair<double,double> itv1=get_itv(circle[a.j],eventp.x);
+    double x0,x1;
+    if(a.lowi) x0=itv0.first;else x0=itv0.second;
+    if(a.lowj) x1=itv1.first;else x1=itv1.second;
+
+    itv0=get_itv(circle[b.i],eventp.x);
+    itv1=get_itv(circle[b.j],eventp.x);
+    double y0,y1;
+    if(b.lowi) y0=itv0.first;else y0=itv0.second;
+    if(b.lowj) y1=itv1.first;else y1=itv1.second;
+
+    if(equ(x0,y0)) return ls(x1,y1);
+    else return ls(x0,y0);
+  }
+};
+
+//-----------union set------------
+int parent[MAXC+1];
+inline void make_set(){for(int i=0;i<=N;++i) parent[i]=i;}
+//attach y to x
+inline void link(int x,int y){parent[y]=x;}
+\end{lstlisting}
+sweep line \\
+left and right point as event point \\
+store following in the BST:(Interval structure)  \\
+ -- parent \\
+ -- which circle contribute the two end points \\
+ -- if these end points is bottom vertex of the interval
+
+\begin{lstlisting}
+typedef set<Interval,compcircle> Itvl;
+typedef Itvl::iterator Iter;
+void debug(Itvl itvl){
+  for(Iter k=itvl.begin();k!=itvl.end();++k){
+    printf("parent: %d lower: %d %d  upper: %d %d\n",k->p,k->i,k->lowi,k->j,k->lowj);
+  }
+}
+void sweepline(){
+  make_set();
+  sort(P,P+2*N,compx());
+  Itvl itvl;
+  itvl.insert(Interval(0,0,true,0,false));
+
+  for(int i=0;i<2*N;++i){
+    eventp=P[i];
+
+    if(eventp.in){
+      Iter lower=itvl.lower_bound(Interval(0,eventp.i,true,eventp.i,false));
+      --lower;
+      link(lower->p,eventp.i);
+      Interval tmp=*lower;
+      itvl.erase(lower);
+      itvl.insert(Interval(tmp.p,tmp.i,tmp.lowi,eventp.i,true));
+      itvl.insert(Interval(eventp.i,eventp.i,true,eventp.i,false));
+      itvl.insert(Interval(tmp.p,eventp.i,false,tmp.j,tmp.lowj));
+    }
+    else{
+      Iter d=itvl.find(Interval(0,eventp.i,true,eventp.i,false));
+      Iter l=d;--l;
+      Iter u=d;++u;
+      Interval low=*l,up=*u;
+      itvl.erase(d);itvl.erase(l);itvl.erase(u);
+      itvl.insert(Interval(low.p,low.i,low.lowi,up.j,up.lowj));
+    }
+  }
+}
+\end{lstlisting}
+as for POJ 2932 don't ask for the total hierarchy, so this is a
+special sweep line algorithm to speed up.
+\begin{lstlisting}
+void sweepline(){
+  make_set();
+  sort(P,P+2*N,compx());
+  Itvl itvl;
+  itvl.insert(Interval(0,0,true,0,false));
+
+  for(int i=0;i<2*N;++i){
+    eventp=P[i];
+
+    if(eventp.in){
+      Iter lower=itvl.lower_bound(Interval(0,eventp.i,true,eventp.i,false));
+      --lower;
+      link(lower->p,eventp.i);
+      if(lower->p == 0){
+        Interval tmp=*lower;
+        itvl.erase(lower);
+        itvl.insert(Interval(tmp.p,tmp.i,tmp.lowi,eventp.i,true));
+        itvl.insert(Interval(eventp.i,eventp.i,true,eventp.i,false));
+        itvl.insert(Interval(tmp.p,eventp.i,false,tmp.j,tmp.lowj));
+      }
+    }
+    else{
+      Iter d=itvl.find(Interval(0,eventp.i,true,eventp.i,false));
+      if(d==itvl.end()) continue;
+      Iter l=d;--l;
+      Iter u=d;++u;
+      Interval low=*l,up=*u;
+      itvl.erase(d);itvl.erase(l);itvl.erase(u);
+      itvl.insert(Interval(low.p,low.i,low.lowi,up.j,up.lowj));
+    }
+  }
+}
+\end{lstlisting}
+\section{Math}
+\subsection{Catalan Number}
+
+\end{document}  

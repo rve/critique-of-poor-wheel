@@ -7,7 +7,7 @@ const int MAXN = 100;
 const int MAXM = 10000;
 const int EXP = 10;
 const int INF = 1000000000;
-
+ 
 int nn,mm;
  
 struct EDGE{
@@ -48,7 +48,6 @@ void Kruskal(){
     int aa = find(pool[i].f);
     int bb = find(pool[i].t);
     if(aa == bb) continue;
-    printf("From <%d> to <%d>, cost %d\n", pool[i].f, pool[i].t, pool[i].v);
     sum += pool[i].v;  
     uni(aa, bb);
   }
@@ -62,7 +61,7 @@ int main(){
     for(int i = 0; i < mm; i++) 
       scanf("%d%d%d", &pool[i].f, &pool[i].t, &pool[i].v);
     Kruskal();
-    printf("Total cost: %d\n",sum);
+    printf("%d\n",sum);
   }
   return 0;
 }

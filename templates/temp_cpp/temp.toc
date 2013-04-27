@@ -1,0 +1,61 @@
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Utility}{2}
+\contentsline {subsection}{\numberline {2.1}Java Template}{2}
+\contentsline {subsection}{\numberline {2.2}Java Multithread}{3}
+\contentsline {subsection}{\numberline {2.3}Binary Search}{4}
+\contentsline {section}{\numberline {3}Graph Theroy}{4}
+\contentsline {subsection}{\numberline {3.1}Prim - O($N^2$)}{4}
+\contentsline {subsection}{\numberline {3.2}Prim- O(MlogN)}{5}
+\contentsline {subsection}{\numberline {3.3}Kruskal -O(MlogM)}{6}
+\contentsline {subsection}{\numberline {3.4}Dijkstra - O($N^2$)}{8}
+\contentsline {subsection}{\numberline {3.5}Dijkstra - O(MlogN)}{9}
+\contentsline {subsection}{\numberline {3.6}Dijkstra with heap}{10}
+\contentsline {subsection}{\numberline {3.7}Bellman-Ford}{12}
+\contentsline {subsection}{\numberline {3.8}Shortest Path Faster Algorithm}{13}
+\contentsline {subsection}{\numberline {3.9}Network Flow - ISAP[NON-ORIGINAL]}{14}
+\contentsline {subsection}{\numberline {3.10}Bipartite Graph Matching}{16}
+\contentsline {subsection}{\numberline {3.11}Minimun Cost Flow [TO BE TESTED!]}{17}
+\contentsline {subsection}{\numberline {3.12}Kuhn-Munkras [NON-ORIGINAL]}{18}
+\contentsline {subsection}{\numberline {3.13}Cut Vetrix and Edge}{19}
+\contentsline {subsection}{\numberline {3.14}Strongly Connected Components}{20}
+\contentsline {section}{\numberline {4}String Algorithm}{22}
+\contentsline {subsection}{\numberline {4.1}ELF Hash}{22}
+\contentsline {subsection}{\numberline {4.2}Aho-Corasick Automation}{22}
+\contentsline {subsection}{\numberline {4.3}Suffix array}{24}
+\contentsline {section}{\numberline {5}Data Struct}{25}
+\contentsline {subsection}{\numberline {5.1}Binary Indexed Tree}{25}
+\contentsline {subsection}{\numberline {5.2}Inversion}{25}
+\contentsline {subsection}{\numberline {5.3}BigInt Multiply with FFT}{26}
+\contentsline {section}{\numberline {6}Computational Geometry}{29}
+\contentsline {subsection}{\numberline {6.1}Constants}{29}
+\contentsline {subsection}{\numberline {6.2}Compare Function}{29}
+\contentsline {subsection}{\numberline {6.3}3D Point and Vector}{29}
+\contentsline {subsection}{\numberline {6.4}3D Utility Functions}{29}
+\contentsline {subsubsection}{\numberline {6.4.1}3D dot and 3D vector cross}{29}
+\contentsline {subsubsection}{\numberline {6.4.2}3D line - line min distance}{30}
+\contentsline {subsubsection}{\numberline {6.4.3}Sphere coord}{30}
+\contentsline {subsection}{\numberline {6.5}2D Point and Vector}{30}
+\contentsline {subsection}{\numberline {6.6}2D Utility Functions}{31}
+\contentsline {subsubsection}{\numberline {6.6.1}2D dot and 2D scalar cross}{31}
+\contentsline {subsubsection}{\numberline {6.6.2}2D triple point coline}{31}
+\contentsline {subsubsection}{\numberline {6.6.3}2D segment - segment overlap}{31}
+\contentsline {subsubsection}{\numberline {6.6.4}2D angle difference between two vectors}{31}
+\contentsline {subsubsection}{\numberline {6.6.5}2D point - line distance}{32}
+\contentsline {subsubsection}{\numberline {6.6.6}2D point - circle tangent}{32}
+\contentsline {subsubsection}{\numberline {6.6.7}2D circle - circle tangent}{32}
+\contentsline {subsubsection}{\numberline {6.6.8}2D circle - polygon intersection area}{33}
+\contentsline {subsubsection}{\numberline {6.6.9}2D vector normal}{34}
+\contentsline {subsubsection}{\numberline {6.6.10}2D vector rotation}{34}
+\contentsline {subsection}{\numberline {6.7}2D Intersection}{34}
+\contentsline {subsubsection}{\numberline {6.7.1}ray - ray intersection}{34}
+\contentsline {subsubsection}{\numberline {6.7.2}line - circle intersection}{35}
+\contentsline {subsection}{\numberline {6.8}Computational Geometry Topics}{35}
+\contentsline {subsubsection}{\numberline {6.8.1}2D convex hull}{35}
+\contentsline {subsubsection}{\numberline {6.8.2}3D convec hull}{36}
+\contentsline {subsubsection}{\numberline {6.8.3}Max distance point pair}{37}
+\contentsline {subsubsection}{\numberline {6.8.4}closed point pair among two polygons}{38}
+\contentsline {subsubsection}{\numberline {6.8.5}closed point pair}{40}
+\contentsline {subsubsection}{\numberline {6.8.6}closed circle pair}{41}
+\contentsline {subsubsection}{\numberline {6.8.7}circle hierarchy}{42}
+\contentsline {section}{\numberline {7}Math}{45}
+\contentsline {subsection}{\numberline {7.1}Catalan Number}{45}
