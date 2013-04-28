@@ -1,13 +1,13 @@
 /*
 ID: jiongrr1
 LANG: C++
-TASK: 
+TASK: ratios
 */
 
-#define TASK  "spin"
-#define LOCAL
+#define TASK  "ratios"
+//#define LOCAL
 //#define SUBMIT
-//#define DEBUG
+#define DEBUG
 
 #include <vector>
 #include <list>
