@@ -1,10 +1,10 @@
 /*
 ID: jiongrr1
 LANG: C++
-TASK: ratios
+TASK: tn
 */
 
-#define TASK  "ratios"
+#define TASK  "tn"
 //#define LOCAL
 //#define SUBMIT
 #define DEBUG
