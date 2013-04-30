@@ -5,9 +5,9 @@ TASK: msquare
 */
 
 #define TASK  "msquare"
-//#define LOCAL
-//#define SUBMIT
-#define DEBUG
+#define LOCAL
+#define SUBMIT
+//#define DEBUG
 
 #include <vector>
 #include <list>
@@ -35,15 +35,18 @@ TASK: msquare
 #include <unordered_map>
 #include <unordered_set>
 #endif
-
 using namespace std;
 #define INF 0x3f3f3f3f
 #ifdef DEBUG
+#define debug(...) printf( __VA_ARGS__) 
 #define cvar(x) cerr << "<" << #x << ": " << x << ">"
+#define  simplevar(x) cerr << x << " "
 #define evar(x) cvar (x) << endl
 template<class T> void DISP(const char *s, T x, int n) {cerr << "[" << s << ": "; for (int i = 0; i < n; ++i) cerr << x[i] << " "; cerr << "]" << endl;}
 #define disp(x,n) DISP(#x " to " #n, x, n)
 #else
+#define  simplevar(...) ({})
+#define debug(...) 
 #define cvar(...) ({})
 #define evar(...) ({})
 #define disp(...) ({})
@@ -83,16 +86,17 @@ template<class edge> struct Graph
     vector<edge>& operator [](int t) {return adj[t];}
 };
 
-const int maxn = 100;
+const int maxn = 30;
 const int MOD = int(1e9) + 7;
 const double EPS = 1E-9;
 const double  PI = acos(-1.0); //M_PI;
 const int dx[] = {-1, 0, 1, 0};
 const int dy[] = {0, 1, 0, -1};
 
-int x[maxn];
+
+
 struct Data {
-    int m[3][5];
+    int m[5][5];
     char s[maxn];
     int len;
     Data() {s[0] = '\0'; len = 0; memset(m, 0, sizeof(m));}
@@ -111,11 +115,10 @@ Data rshift(Data& d1) {
 }
 Data rotate(Data& _d) {
     Data d = _d;
-    int tmp = d.m[1][3];
-    d.m[1][3] = d.m[1][2];
-    d.m[1][2] = d.m[2][2];
-    d.m[2][2] = d.m[2][3];
-    d.m[2][3] = tmp;
+    int tmp = d.m[3][1]; d.m[3][1] = d.m[2][1];
+    d.m[2][1] = d.m[2][2];
+    d.m[2][2] = d.m[3][2];
+    d.m[3][2] = tmp;
     d.s[d.len++] = 'C';
     //d.s += "C";
     return d;
@@ -139,6 +142,12 @@ bool is_equal(Data& a, Data& b) {
     return flag;
 }
 
+void dispex(Data& d);
+const int times = 150;
+int vis[times];
+int lenvis = 0;
+map<int64, bool> mp;
+bool avail(Data& d);
 int main()
 {
 #ifdef LOCAL 
@@ -151,44 +160,78 @@ int main()
     for (int i=1; i<=4; i++) {
         cin>>t.m[i][1];
         d.m[i][1] = i;
+        evar(t.m[i][1]);
     }
     for (int i=4; i>=1; i--) {
         cin>>t.m[i][2];
-        d.m[i][2] = 8 - i;
+        d.m[i][2] = 9 - i;
+        evar(t.m[i][1]);
     }
-    for (int i=1; i<=4; i++) {
-    cvar(d.m[i][1]);}
-    evar("");
-    for (int i=1; i<=4; i++) {
-    cvar(d.m[i][2]);}
-    evar("");
-    for (int i=1; i<=4; i++) {
-    cvar(t.m[i][1]);}
-    evar("");
-    for (int i=1; i<=4; i++) {
-    cvar(t.m[i][2]);}
-    evar("");
-    //t.s = d.s = "";
+    evar(d.len);
+    dispex(d);
+    evar(t.len);
+    dispex(t);
     queue<Data> q;
     q.push(d);
-    int count = 10;
-    while(!is_equal(q.front(), t) && count-- >= 0) {
+    int count = INF;
+    evar(!is_equal(q.front(), t));
+    memset(vis, 0,sizeof(vis));
+    while(!is_equal(q.front(), t) && (count > 0)) {
+        count --;
+
         Data _d = q.front();
+        
+        dispex(_d);
+        q.pop();
         Data r;
+        r = swap(_d);
+        if (avail(r))
+        q.push(r);
         r = rshift(_d);
+        if (avail(r))
         q.push(r);
         r = rotate(_d);
-        q.push(r);
-        r = swap(_d);
+        if (avail(r))
         q.push(r);
     }
-    if (count) {
+    if (is_equal(q.front(), t)) {
         Data ans = q.front();
         ans.s[ans.len] = '\0';
         cout<<ans.len<<endl;
         cout<<ans.s<<endl;
     }
-    else  cout<<"None"<<endl;
+    else { cout<<"None"<<endl;}
     return 0;
 
+}
+void dispex(Data& d)
+{
+    simplevar("\n");
+    for (int i=1; i<=4; i++) {
+        simplevar(d.m[i][1]);
+        //cvar(d.m[i][1]);
+    }
+    simplevar("\n");
+    for (int i=1; i<=4; i++) {
+        simplevar(d.m[i][2]);
+    }
+    simplevar("\n");
+}
+bool avail(Data& d)
+{
+    int64 seq=0;
+    int64 m = 1;
+    for (int i=1; i<=4; i++) {
+        seq += m * d.m[i][1]; 
+        m *=10;
+    }
+    for (int i=1; i<=4; i++) {
+        seq += m * d.m[i][2];
+        m *= 10;
+    }
+    if (mp[seq]) return 0;
+    else {
+        mp[seq] = 1;
+        return 1;
+    }
 }
