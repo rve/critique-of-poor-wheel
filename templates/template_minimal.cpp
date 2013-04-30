@@ -33,9 +33,11 @@ using namespace std;
 #ifdef DEBUG
 #define cvar(x) cerr << "<" << #x << ": " << x << ">"
 #define evar(x) cvar (x) << endl
+#define debug(...) printf( __VA_ARGS__) 
 template<class T> void DISP(const char *s, T x, int n) {cerr << "[" << s << ": "; for (int i = 0; i < n; ++i) cerr << x[i] << " "; cerr << "]" << endl;}
 #define disp(x,n) DISP(#x " to " #n, x, n)
 #else
+#define debug(...) 
 #define cvar(...) ({})
 #define evar(...) ({})
 #define disp(...) ({})
