@@ -71,6 +71,7 @@ int main(){
     for(int i = 1; i <= mm; i++){
       int aa,bb,vv; scanf("%d%d%d", &aa, &bb, &vv);
       addEdge(aa, bb, vv);
+      addEdge(bb, aa, vv);
     } 
     Prim_Prio();
     printf("%d\n",sum);

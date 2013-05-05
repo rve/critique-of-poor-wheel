@@ -23,3 +23,6 @@
 *.lai
 *.la
 *.a
+
+# others
+prac_*
