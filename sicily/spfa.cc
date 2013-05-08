@@ -1,12 +1,4 @@
-/*
-ID: jiongrr1
-LANG: C++
-TASK: butter
-*/
-
-#define TASK  "butter"
-#define LOCAL
-//#define SUBMIT
+//#define LOCAL
 #define DEBUG
 
 #include <vector>
@@ -37,6 +29,7 @@ TASK: butter
 #endif
 
 using namespace std;
+#define INF 0x3f3f3f3f
 #ifdef DEBUG
 #define cvar(x) cerr << "<" << #x << ": " << x << ">"
 #define evar(x) cvar (x) << endl
@@ -83,6 +76,11 @@ template<class edge> struct Graph
     void del(int s, edge e) {adj[s].erase (find (iter (adj[s]), e)); }
     vector<edge>& operator [](int t) {return adj[t];}
 };
+strcut edge {
+  int to, from, cost;
+  edge(_t, _f, _c) {
+    to = _t; from = _f; cost = _c;}
+};
 
 const int maxn = 110000;
 const int MOD = int(1e9) + 7;
@@ -90,90 +88,25 @@ const double EPS = 1E-9;
 const double  PI = acos(-1.0); //M_PI;
 const int dx[] = {-1, 0, 1, 0};
 const int dy[] = {0, 1, 0, -1};
-const int MAXN = 900;
-const int MAXM = 3000;
-const int EXP = 10;
-const int INF = 25000000;
- 
-int edges; 
-struct EDGE{
-  int n;
-  int d;
-  EDGE *nxt;
-}pool[MAXM*2+EXP];
-EDGE lnk[MAXN+EXP];
- 
-void addEdge (int _f, int _t, int _d){
-  pool[edges].n = _t;
-  pool[edges].d= _d;
-  pool[edges].nxt = lnk[_f].nxt;
-  lnk[_f].nxt = &pool[edges];
-  edges++;
-}
-int cow_at[MAXN];
- 
-int nn;
-int pp;
-int mm;
- 
-bool inQ[MAXN+EXP];
-int dist[MAXN][MAXN+EXP];
- 
-void spfa(int s, int k){ 
-  for(int i = 0; i <= nn; i++){
-    inQ[i] = 0;             
-    dist[k][i] = INF;
-  }
-  queue<int> Q; Q.push(k); // change s to k 
-  inQ[k] = 1; dist[k][k] = 0;
-  while(Q.size()){
-    int now = Q.front(); Q.pop();
-    inQ[now] = 0;
-    for(EDGE* tmp = lnk[now].nxt; tmp; tmp = tmp->nxt){
-      if(dist[k][now] + tmp->d < dist[k][tmp->n]){
-        dist[k][tmp->n] = dist[k][now] + tmp->d;
-        if(!inQ[tmp->n]) { 
-          Q.push(tmp->n);
-          inQ[tmp->n] = 1;
-        }
-      }
-    }
-  }
-}
- 
-int main(){
+int nn, mm;
 
-
+int x[maxn];
+int main()
+{
 #ifdef LOCAL 
-    freopen(TASK ".in","r",stdin);  
+    freopen("data.in","r",stdin);  
 #endif
-#ifdef SUBMIT
-    freopen(TASK ".out","w",stdout);
-#endif
-    edges = 0;
-    
-    scanf("%d%d%d", &pp, &nn, &mm); 
-    for(int i = 1; i <= pp; i++) scanf("%d", &cow_at[i]);
-    for(int i = 1; i <= nn; i++) lnk[i].nxt = 0; 
-    for(int i = 1; i <= mm; i++){
-      int aa,bb,dd; scanf("%d%d%d", &aa, &bb, &dd);
-      addEdge(aa, bb, dd);
-      addEdge(bb, aa, dd);
-    }
-    for (int i=1; i<=nn; i++)
-    spfa(1,i);    
+    int cas; scanf("%d", &cas);
+    while(cas--) {
 
-    int ret = INF;
-    for (int i=1; i<=nn; i++)
-    {
-        int sum = 0;
-        for (int j=1; j<=pp; j++)
-        {
-            sum += dist[i][cow_at[j]];
-        }
-        if (sum < ret) ret = sum;
-        evar(sum);
+      Graph<edge> g(900);
+      scanf("%d %d", &nn, &mm);
+      for (int i=0; i<mm; i++) {
+        int aa, bb, dd;
+        scanf("%d %d %d", &aa, &bb, &dd);
+        g.add(aa, edge(aa, bb, cc));
+        g.add(bb, edge(bb, aa, cc));
+      }
+
     }
-    cout<<ret<<endl;
-  return 0;
 }
