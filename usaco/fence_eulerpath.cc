@@ -6,7 +6,7 @@ TASK: fence
 
 #define TASK  "fence"
 #define LOCAL
-//#define SUBMIT
+#define SUBMIT
 //#define DEBUG
 
 #include <vector>
@@ -82,6 +82,14 @@ template<class edge> struct Graph
     void del(int s, edge e) {adj[s].erase (find (iter (adj[s]), e)); }
     vector<edge>& operator [](int t) {return adj[t];}
 };
+const int maxn = 3000;
+const int MOD = int(1e9) + 7;
+const double EPS = 1E-9;
+const double  PI = acos(-1.0); //M_PI;
+const int dx[] = {-1, 0, 1, 0};
+const int dy[] = {0, 1, 0, -1};
+
+int num_e[1000100];
 //compress edge  to int
 int getf(int e) {
     return e/1000;
@@ -105,10 +113,11 @@ void dfs(int x) {
         int t2 = make_edge(gett(t1), getf(t1));
         cvar(t1); evar(t2);
         //assert(mp[t1] == mp[t2]);
-        if (mp[t1] == 0 && mp[t2] == 0)
+        //if (mp[t1] == 0 && mp[t2] == 0)
+        if (num_e[t1])
         {
-            mp[t1] = 1;
-            mp[t2] = 1;
+            num_e[t1] --;
+            num_e[t2] --;
             dfs(gett(t1));
         }
         /*
@@ -126,13 +135,6 @@ void dfs(int x) {
     }
 }
 
-const int maxn = 3000;
-const int MOD = int(1e9) + 7;
-const double EPS = 1E-9;
-const double  PI = acos(-1.0); //M_PI;
-const int dx[] = {-1, 0, 1, 0};
-const int dy[] = {0, 1, 0, -1};
-
 int main()
 {
 #ifdef LOCAL 
@@ -149,6 +151,7 @@ int main()
     int f1 = -1, t1 = -1;
     int f, t;
     memset(de, 0, sizeof(de));
+    memset(num_e, 0, sizeof(num_e));
     for (int i=1; i<=nn; i++) {
         scanf("%d %d", &f, &t);
         if (f< mini) mini = f;
@@ -156,11 +159,17 @@ int main()
         de[f] ++;
         de[t] ++;
 
+        num_e[make_edge(f,t)] ++;
+        num_e[make_edge(t,f)] ++;
+
         g.add(f, make_edge(f,t));
         g.add(t, make_edge(t,f));
     }
+    for (int i=0; i<g.adj.size(); i++) {
+        sort(g[i].begin(), g[i].end());
+    }
     for (int i=0; i < maxn; i++) {
-        if (de[i] == 1) {
+        if (de[i] & 1) {
             if (f1 == -1) {
                 f1 = i;
             }
