@@ -7,7 +7,7 @@ TASK: fence
 #define TASK  "fence"
 #define LOCAL
 //#define SUBMIT
-#define DEBUG
+//#define DEBUG
 
 #include <vector>
 #include <list>
@@ -102,8 +102,8 @@ void dfs(int x) {
     for (int i=0; i<g[x].size(); i++)
     {
         int t1 = g[x][i];
-        int t2 = make_edge(getf(t1), getf(t2));
-        cvar(getf(t1)); evar(gett(t1));
+        int t2 = make_edge(gett(t1), getf(t1));
+        cvar(t1); evar(t2);
         //assert(mp[t1] == mp[t2]);
         if (mp[t1] == 0 && mp[t2] == 0)
         {
@@ -111,12 +111,14 @@ void dfs(int x) {
             mp[t2] = 1;
             dfs(gett(t1));
         }
+        /*
         else if (mp[t1] == 1 && mp[t2] == 1) {
         }
         else 
         {
             evar("assert failed mp[t1] != mp[t2]");
         }
+        //*/
     }
     if (0 == cnt) {
         ss.push(x);
@@ -124,14 +126,13 @@ void dfs(int x) {
     }
 }
 
-const int maxn = 110000;
+const int maxn = 3000;
 const int MOD = int(1e9) + 7;
 const double EPS = 1E-9;
 const double  PI = acos(-1.0); //M_PI;
 const int dx[] = {-1, 0, 1, 0};
 const int dy[] = {0, 1, 0, -1};
 
-int x[maxn];
 int main()
 {
 #ifdef LOCAL 
@@ -143,18 +144,42 @@ int main()
 
     int nn;
     scanf("%d", &nn);
+    int de[maxn];
+    int mini = INF;
+    int f1 = -1, t1 = -1;
     int f, t;
+    memset(de, 0, sizeof(de));
     for (int i=1; i<=nn; i++) {
         scanf("%d %d", &f, &t);
+        if (f< mini) mini = f;
+        if (t < mini) mini = t;
+        de[f] ++;
+        de[t] ++;
+
         g.add(f, make_edge(f,t));
         g.add(t, make_edge(t,f));
     }
-    dfs(1);
-
-    while(ss.size())
-    {
-        printf("%c", ss.top());
-        ss.pop();
+    for (int i=0; i < maxn; i++) {
+        if (de[i] == 1) {
+            if (f1 == -1) {
+                f1 = i;
+            }
+            else {
+                t1 = i;
+            }
+        }
+    }
+    if (f1 > t1) swap(f1, t1);
+    if (f1 == -1)
+    dfs(mini);
+    else {
+        dfs(f1);
     }
 
+    while(!ss.empty())
+    {
+        printf("%d\n", ss.top());
+        ss.pop();
+    }
+    return 0;
 }
