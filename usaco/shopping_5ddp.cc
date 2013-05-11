@@ -5,8 +5,8 @@ TASK: shopping
 */
 
 #define TASK  "shopping"
-//#define LOCAL
-//#define SUBMIT
+#define LOCAL
+#define SUBMIT
 #define DEBUG
 
 #include <vector>
@@ -83,14 +83,33 @@ template<class edge> struct Graph
     vector<edge>& operator [](int t) {return adj[t];}
 };
 
-const int maxn = 110000;
+const int maxn = 1001;
 const int MOD = int(1e9) + 7;
 const double EPS = 1E-9;
 const double  PI = acos(-1.0); //M_PI;
 const int dx[] = {-1, 0, 1, 0};
 const int dy[] = {0, 1, 0, -1};
 
-int x[maxn];
+int f[6][6][6][6][6];
+int nhash = 0;
+int ha[maxn];
+int hash(int d) {
+    if (!ha[d]) ha[d] = ++nhash;
+    return  ha[d];
+
+}
+struct offer {
+    int p[6]; int c;
+    bool e[6]; //exist
+    offer() {
+        memset(p, 0, sizeof(p));
+        memset(e, 0, sizeof(e));
+        c = 0;
+    }
+};
+int no = 0;
+offer o[150];
+int r[6];
 int main()
 {
 #ifdef LOCAL 
@@ -99,5 +118,82 @@ int main()
 #ifdef SUBMIT
     freopen(TASK ".out","w",stdout);
 #endif
+    memset(ha, 0, sizeof(ha));
+
+    int nn;
+    cin>>nn;
+    no = nn;
+    for (int i=1; i<=nn; i++) {
+        evar(nn);
+        int tt;
+        cin>>tt;
+        for (int j=1; j<=tt; j++) {
+            int a, b;
+            cin>>a>>b;
+            evar(a); evar(hash(a));
+            o[i].p[hash(a)] = b;
+            o[i].e[hash(a)] = 1;
+        }
+        int total;
+        cin>>total;
+        o[i].c = total;
+    }
+
+    int mm;
+    cin>>mm;
+    for (int i=1; i<=mm; i++) {
+        int a, b, c;
+        cin>>a>>b>>c;
+        evar(a);
+        evar(hash(a));
+        r[hash(a)] = b;
+        no++;
+        o[no].p[hash(a)] = 1;
+        o[no].e[hash(a)] = 1;
+        o[no].c = c;
+    }
+
+    
+    memset(f, 0x3f, sizeof(f));
+    f[0][0][0][0][0] = 0;
+    int a[6];
+    memset(a, 0, sizeof(a));
+    int acc = 1;
+    for (a[1]=0;a[1]<=r[1]; a[1]++) {
+        for (a[2]=0; a[2]<=r[2]; a[2]++) {
+                acc++;
+            for (a[3]=0; a[3]<=r[3]; a[3]++) {
+
+                for (a[4]=0;a[4]<=r[4]; a[4]++) {
+
+                    for (a[5]=0; a[5]<=r[5]; a[5]++) {
+                        for (int i=1; i<=no; i++) {
+                            bool flag = 1;
+                            for (int j=1; j<=5; j++) {
+                                /*
+                                disp(o[i].p+1, 5);
+                                disp(a+1, 5);
+                                //*/
+                                if (o[i].p[j] > a[j]) {flag = 0;break;}
+                            }
+                            //evar(f[a[1]][a[2]][a[3]][a[4]][a[5]]);
+                            if (flag) {
+                                //disp(a+1, 5);
+                                f[a[1]][a[2]][a[3]][a[4]][a[5]]
+                                    =min(f[a[1]][a[2]][a[3]][a[4]][a[5]],
+                                        f[a[1]-o[i].p[1]][a[2]-o[i].p[2]]\
+                                        [a[3]-o[i].p[3]]\
+                                        [a[4]-o[i].p[4]][a[5]-o[i].p[5]] + o[i].c);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    int ret = f[r[1]][r[2]][r[3]][r[4]][r[5]];
+    disp(r+1, 5);
+    cout<<ret<<endl;
+    
 
 }
