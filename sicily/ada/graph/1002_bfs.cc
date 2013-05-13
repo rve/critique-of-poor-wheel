@@ -1,5 +1,5 @@
-#define LOCAL
-#define DEBUG
+//#define LOCAL
+//#define DEBUG
 
 #include <vector>
 #include <list>
@@ -81,55 +81,71 @@ const int maxn = 110;
 const int MOD = int(1e9) + 7;
 const double EPS = 1E-9;
 const double  PI = acos(-1.0); //M_PI;
-const int MAXN = 250;
-const int EXP = 10;
-int dx[] = {1, 0, -1, 0};
-int dy[] = {0, 1, 0, -1};
-
-struct point {
-    int x, y;
-};
-
-int m[MAXN][MAXN];
-bool valid(point& p);
-bool vis[MAXN][MAXN];
-int nn, d, n;
-int flag = 0;
-int sx, sy, tx, ty;
-void floodfill(int x, int y) {
-    if (x == tx && y == ty) {
-        flag = 1; return;
-    }
-    vis[x][y] = 1;
-    if (x >1 && vis[x-1][y] == 0 && m[x-1][y] == 1) floodfill(x-1, y);
-    if (y >1 && vis[x][y-1] == 0 && m[x][y-1]) floodfill(x, y-1);
-    if (x <= n-1 && vis[x+1][y] == 0 && m[x+1][y]) floodfill(x+1, y);
-    if (y <= d-1 && vis[x][y+1] == 0 && m[x][y+1]) floodfill(x, y+1);
-}
-int main(){
-#ifdef LOCAL
-    freopen("data.in", "r", stdin);
+const int dx[] = {-1, 0, 1, 0};
+const int dy[] = {0, 1, 0, -1};
+int vis[maxn];
+int color[maxn];
+int main()
+{
+#ifdef LOCAL 
+    freopen("data.in","r",stdin);  
 #endif
-    scanf("%d", &nn);
-    while(nn--){
-        flag = 0;
-        scanf("%d%d", &n, &d);
-        memset(m, 0, sizeof(m));
-        memset(vis, 0, sizeof(vis));
-        int f;
-        for (int i=1; i<=n; i++) {
-            for (int j=1; j<=d; j++) {
-                scanf("%d", &f);
-                m[i][j] = f;
+    memset(color, 0, sizeof(color));
+    memset(vis, 0, sizeof(vis));
+    Graph<int> g(maxn);
+    int nn, mm;
+    scanf("%d %d", &nn, &mm);
+    for (int i=1; i<=mm; i++) {
+        int f, t;
+        scanf("%d %d", &f, &t);
+        g.add(f, t);
+        g.add(t, f);
+    }
+    //show 
+    {
+        for (int i=0; i<g.adj.size(); i++) {
+            for (int j=0; j<g[i].size(); j++) {
+                cvar(i); cvar(j);
+                evar(g[i][j]);
             }
         }
-        scanf("%d%d%d%d", &sx, &sy, &tx, &ty);
-        floodfill(sx, sy);
+    }
+    for (int i=1; i<=nn; i++) {
 
-        cout<<flag<<endl;
-}
-return 0;
-}
-bool valid(point& p) {
-    return (p.x >0 && p.y>0 && p.x<=n && p.y <= d);
+        if (!color[i]) {
+            memset(vis, 0, sizeof(vis));
+            queue<int> q;
+            q.push(i);
+            color[i] = i;
+            while(q.size()) {
+                int cur = q.front(); q.pop();
+                vis[cur] = 1;
+                for (int k=0; k<g[cur].size(); k++) {
+                    int t = g[cur][k];
+                    if (!vis[t] && !color[t]) {
+                        color[t] = color[cur];
+                        q.push(t);
+                    }
+                }
+
+            }
+        }
+    }
+    disp(color, nn+1);
+    int ans[maxn];
+    memset(ans, 0, sizeof(ans));
+    for (int i=1; i<=nn; i++) {
+        evar(color[i]);
+        //ans[color[i]] += 1; //??
+        int dum = color[i];
+        ans[dum] ++;
+    }
+    disp(ans, nn+1);
+    int ret = 0;
+    for (int i=1; i<=nn; i++) {
+        if (ans[i]) ret++;
+    }
+    cout<<ret<<endl;
+    return 0;
+        
 }
