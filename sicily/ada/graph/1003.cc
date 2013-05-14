@@ -86,70 +86,77 @@ const int EXP = 10;
 int dx[] = {2,1,-1,-2,-2,-1,1,2};
 int dy[] = {1,2,2,1,-1,-2,-2,-1};
 
-struct edge{
+struct point {
     int x, y, s;
-    edge(int _x=0,int  _y=0,int  _s=0) {
+    point(int _x=0,int  _y=0,int  _s=0) {
         x = _x, y=_y, s=_s;
 
     }
 };
 
-int color[MAXN];
-bool vis[MAXN];
+int m[MAXN][MAXN];
+bool vis[MAXN][MAXN];
 bool valid(int x, int y);
-int nn, mm;
+int nn, d, n;
 int flag = 0;
 int sx, sy, tx, ty;
 int ret = INF;
-Graph<edge> g(2000);
 void bfs();
 int main(){
 #ifdef LOCAL
     freopen("data.in", "r", stdin);
 #endif
-    scanf("%d%d", &nn, &mm);
-    cvar(nn); evar(mm);
-    int a, b;
-    for (int i=0; i<mm; i++) {
-        scanf("%d%d", &a, &b);
+    scanf("%d", &nn);
+    getchar();
+    while(nn--){
+        ret = INF;
+        char a, b, c,d;
+        scanf("%c%c %c%c", &a, &b, &c, &d);
         cvar(a); evar(b);
-        g.add(a, edge(a, b)); 
-        g.add(b, edge(b, a));
-    }
-    bfs();
-    if (ret) cout<<"yes"<<endl;
-    else cout<<"no"<<endl;
-    return 0;
+        cvar(c); evar(d);
+        getchar();
+        getchar();
+        sx = a - 'a' + 1;
+        sy = b - '0';
+        tx = c - 'a' + 1;
+        ty = d - '0';
+        cvar(sx); evar(sy);
+        cvar(tx); evar(ty);
+        memset(vis, 0, sizeof(vis));
+        bfs();
+
+        printf("To get from %c%c to %c%c takes %d knight moves.\n", a, b, c ,d, ret);
+        //cout<<ret<<endl;
+}
+
+return 0;
 }
 bool inline valid(int x, int y) {
     return (x >0 && y>0 && x<=8 && y <= 8);
 }
 void bfs() {
-    queue<int> q;
-    q.push(1);
-    color[1] = 1;
-    vis[1] = 1;
+    queue<point> q;
+    q.push(point(sx, sy,0));
+    vis[sx][sy] = 1;
     while(q.size()) {
-        int cur = q.front(); q.pop();
-        for (int j=0; j<g[cur].size(); j++) {
-            int t = g[cur][j].y;
-            cvar(cur); evar(t); 
-            if (vis[t]) {
-                if (color[t] % 2 != (color[cur] + 1) % 2)
-                {
-                    cvar(color[t]); evar(color[cur]);
+        point cur = q.front(); q.pop();
+        if (cur.x == tx && cur.y == ty) {
+            cvar(tx); evar(ty);
+            ret = min(ret, cur.s); break;
+        }
+        point tmp;
+        for (int i=0; i<8; i++) {
+            tmp.x = cur.x + dx[i];
+            tmp.y = cur.y + dy[i];
+            tmp.s = cur.s + 1;
 
-                    ret = 0; return;
-                }
+            //cvar(tmp.x); evar(tmp.y);
+            if (valid(tmp.x, tmp.y) && vis[tmp.x][tmp.y] == 0
+                    ) {
+                vis[tmp.x][tmp.y] = 1;
+                q.push(tmp);
             }
-            else {
-                color[t] = (color[cur] + 1);
-                vis[t] = 1;
-                q.push(t);
-            }
-
         }
     }
-    ret = 1;
-
+    while (q.size()) q.pop();
 }
