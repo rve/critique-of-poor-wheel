@@ -1,5 +1,5 @@
-//#define LOCAL
-#define DEBUG
+#define LOCAL
+///#define DEBUG
 
 #include <vector>
 #include <list>
@@ -103,17 +103,21 @@ int main()
         memset(in, 0, sizeof(in));
         memset(vis, 0, sizeof(vis));
         memset(b, 0, sizeof(b));
-        memset(b, 0, sizeof(b));
         for (int i=0; i<m; i++) {
             int u, v;
             scanf("%d%d", &u, &v);
             g.add(u, v);
-            in[u]++;
+            in[v]++;
         }
         if (m >= n) fl = 0;
         for (int i=1; i<=n; i++) {
             if (0 == in[i]) {
                 dfs(i, 0);
+            }
+        }
+        for (int i=1; i<=n; i++) {
+            if (vis[i] == 0) {
+                fl=0; // self-loop
             }
         }
         if (!fl) {
@@ -126,6 +130,7 @@ int main()
     }
 }
 void dfs(int u, int d) {
+
     if (vis[u]) {
         fl = 0; return;
     }
