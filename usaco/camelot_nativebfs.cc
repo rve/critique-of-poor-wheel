@@ -1,5 +1,4 @@
 /*
-
 ID: jiongrr1
 LANG: C++
 TASK: camelot
@@ -8,7 +7,7 @@ TASK: camelot
 #define TASK  "camelot"
 #define LOCAL
 //#define SUBMIT
-#define DEBUG
+//#define DEBUG
 
 #include <vector>
 #include <list>
@@ -95,6 +94,7 @@ const int sx[] = {1,0,-1,-1.-1,0,1,1}; //saber move
 const int sy[] = {1,1,1,0,-1,-1,-1,0};
 bool inline isValid(point& p);
 void inline bfs(int x);
+bool vis[32][32];
 void ff(); // calculate saber's minimal steps to all point on the board
 int rr, cc;
 /*
@@ -105,6 +105,9 @@ int rr, cc;
    //*/
 
 void show(int a[][31]);
+int sax, say, tax, tay;
+bool finish();
+void init();
 int main()
 {
 #ifdef LOCAL 
@@ -113,6 +116,7 @@ int main()
 #ifdef SUBMIT
     freopen(TASK ".out","w",stdout);
 #endif
+    init();
     cin>>rr>>cc;
     char a; int b;
     cin>>a>>b;
@@ -120,12 +124,16 @@ int main()
     saber.x = a - 'A' + 1; saber.y = b;
     saber.fs = 0;
     saber.s = 0;
+
     int cnt = 1;
     k[0] = saber;
     while(cin>>a>>b) {
         k[cnt].x = a - 'A' + 1;
         k[cnt].y = b;
         cnt++;
+    }
+    if (1 == cnt) {
+        cout<<0<<endl; return 0;
     }
     memset(d, 0x3f, sizeof(d));
     memset(ds, 0x3f, sizeof(ds));
@@ -168,7 +176,6 @@ int main()
 
 }
 void inline bfs(int x) {
-    int vis[31][31];
     memset(vis, 0, sizeof(vis));
     queue<point> q;
     d[x][k[x].y][k[x].x] = 0;
@@ -176,15 +183,15 @@ void inline bfs(int x) {
     ds[x][k[x].y][k[x].x] = d[0][k[x].y][k[x].x];
     //evar(k[x].fs);
     q.push(k[x]);
-    while(q.size()) {
+    while(q.size() && (!finish()) ) {
         point cur = q.front(); q.pop();
-        vis[cur.y][cur.x] = 1;
         for (int i=0; i<8; i++) {
             point tmp;
             tmp.x = cur.x + dx[i];
             tmp.y = cur.y + dy[i];
             tmp.s = cur.s + 1;
             if (isValid(tmp) && (!vis[tmp.y][tmp.x])) {
+                vis[cur.y][cur.x] = 1;
                 if (x != 0) {
                     tmp.fs = min(d[0][tmp.y][tmp.x], cur.fs);
                     ds[x][tmp.y][tmp.x] = min(ds[x][tmp.y][tmp.x], tmp.fs);
@@ -198,11 +205,10 @@ void inline bfs(int x) {
 
     }
 }
-bool isValid(point& p) {
+bool inline isValid(point& p) {
     return p.x >0 && p.x <= cc && p.y>=1 && p.y<=rr;
 }
 void ff() {
-    bool vis[31][31];
     memset(vis,0, sizeof(vis));
     queue<point> q;
     saber.fs = 0;
@@ -211,7 +217,6 @@ void ff() {
     //evar("saber: ");
     while(q.size()) {
         point cur = q.front(); q.pop();
-        vis[cur.y][cur.x] = 1;
         for (int i=0; i<8; i++) {
             point tmp;
             tmp.x = cur.x + sx[i];
@@ -219,6 +224,7 @@ void ff() {
             tmp.fs = min(tmp.fs, cur.fs+1);
             //evar(tmp.fs);
             if (isValid(tmp) &&vis[tmp.y][tmp.x] == 0) {
+                vis[cur.y][cur.x] = 1;
                 q.push(tmp);
                 if (tmp.fs < d[0][cur.y][cur.x]) {
                     d[0][cur.y][cur.x] = tmp.fs;}
@@ -233,4 +239,23 @@ void show(int a[][31])
         }
         evar("\n");
     }
+}
+void init() {
+    sax = max(0, saber.x-1);
+    say = max(0, saber.y - 1);
+    tax = min(rr, saber.x+1);
+    tay = min(cc, saber.y + 1);
+
+}
+bool finish() {
+    for (int i=sax; i<=tax; i++) {
+        for (int j=say; j<=tay; j++) {
+            if (vis[i][j] != 1) {
+                return false;
+            }
+        }
+    }
+    return 0;
+
+
 }
