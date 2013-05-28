@@ -66,16 +66,7 @@ template<class T> inline T sqr(T a){return a*a;}
 template<class T> inline T cub(T a){return a*a*a;}
 template <typename T> T gcd(T x, T y) {for (T t; x; t = x, x = y % x, y = t); return y; }
 
-template<class edge> struct Graph
-{
-    vector<vector<edge> > adj;
-    Graph(int n) {adj.clear (); adj.resize (n + 5);}
-    Graph() {adj.clear (); }
-    void resize(int n) {adj.resize (n + 5); }
-    void add(int s, edge e){adj[s].push_back (e);}
-    void del(int s, edge e) {adj[s].erase (find (iter (adj[s]), e)); }
-    vector<edge>& operator [](int t) {return adj[t];}
-};
+
 
 const int maxn = 11000;
 const int MOD = int(1e9) + 7;
@@ -83,12 +74,14 @@ const double EPS = 1E-9;
 const double  PI = acos(-1.0); //M_PI;
 const int dx[] = {-1, 0, 1, 0};
 const int dy[] = {0, 1, 0, -1};
+vector<int> g[maxn];
 int nn, mm;
-Graph<int> g(maxn);
+queue<int> q;
 void init();
 void solve();
 bool flag = 1;
-
+int sorted = 0;
+int ans = 0;
 int in[maxn];
 int x[maxn];
 int main()
@@ -96,8 +89,9 @@ int main()
 #ifdef LOCAL
     freopen("data.in","r",stdin);
 #endif
-
-
+    init();
+    solve();
+    return 0;
 }
 void init() {
   memset(in, 0, sizeof(in));
@@ -106,19 +100,47 @@ void init() {
   for (int i=0; i<mm; i++) {
     int f, t;
     scanf("%d %d", &f, &t);
-    g.add(f, t);
-    in[t] ++;
+    g[t].push_back(f);
+    in[f] ++;
   }
+  disp(in, 5);
+  
+  for (int i=1; i<=nn; i++) 
+    {
+      if (in[i] == 0) 
+        {
+          q.push(i);
+          x[i] = 100;
+          evar("in");
+          evar(i);
+          
+        }
+    }
+  
 }
 void solve() {
-  int k;
-  for (int k=0; k<nn; k+=) {
-    if (in[k] == 0) {
-      break;
-    }}
-  if (k == nn) {
-    flag = 0; return;
-  }
-  for (int i=)
+  while(!q.empty()) 
+    {
+      disp(x, 5);
+      
+      int u = q.front();
+      evar(u);
 
+      
+      q.pop();
+      sorted++;
+      ans += x[u];
+      for (int i=0; i<g[u].size(); i++) 
+        {
+          int v = g[u][i];
+          if (--in[v] == 0) q.push(v);
+          x[v] = x[u] + 1;
+        }
+    }
+  if (sorted == nn)
+    cout<<ans<<endl;
+  else
+    cout<<"Poor Xed"<<endl;
+  
 }
+
