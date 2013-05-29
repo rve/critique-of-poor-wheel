@@ -1,7 +1,6 @@
 *.o
 *.tmp
 *.data
-*.in
 *.out
 *.bin
 *.swp
