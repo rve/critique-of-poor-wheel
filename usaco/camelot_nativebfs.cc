@@ -7,7 +7,7 @@ TASK: camelot
 #define TASK  "camelot"
 #define LOCAL
 //#define SUBMIT
-//#define DEBUG
+#define DEBUG
 
 #include <vector>
 #include <list>
@@ -90,7 +90,7 @@ int d[maxn][31][31];
 int ds[maxn][31][31];
 const int dx[] = {2,1,-1,-2,-2,-1,1,2};//knight jump
 const int dy[] = {1,2,2,1,-1,-2,-2,-1};
-const int sx[] = {1,0,-1,-1.-1,0,1,1}; //saber move
+const int sx[] = {1,0,-1,-1,-1,0,1,1}; //saber move
 const int sy[] = {1,1,1,0,-1,-1,-1,0};
 bool inline isValid(point& p);
 void inline bfs(int x);
@@ -120,7 +120,6 @@ int main()
     cin>>rr>>cc;
     char a; int b;
     cin>>a>>b;
-    cvar(a); evar(b);
     saber.x = a - 'A' + 1; saber.y = b;
     saber.fs = 0;
     saber.s = 0;
@@ -137,11 +136,11 @@ int main()
     }
     memset(d, 0x3f, sizeof(d));
     memset(ds, 0x3f, sizeof(ds));
-    bfs(0);
-    ff();
-    show(d[0]);
+    bfs(0); // saber 's distance
+    ff();  // saber's distance (2)
+    evar(d[0][1][2]);
     for (int i=1; i<cnt; i++) {
-        bfs(i);
+        bfs(i); //knights
     }
     int des1[31][31];
     int des2[31][31];
@@ -151,14 +150,11 @@ int main()
         for (int i=1; i<=rr; i++) {
             for (int j=1; j<=cc; j++) {
                 des1[i][j] += d[m][i][j];
-     //           evar(m);
-     //           show(d[m]);
-     //           show(d[1]);
-     //           show(des1);
-     //           show(d[m]);
-     //           cvar(i); evar(j);
                 des2[i][j] = min(des2[i][j], ds[m][i][j]);
             }}
+    evar(d[1][1][2]);
+    evar(d[0][1][2]);
+    evar(ds[1][1][2]);
     point best;
     best.s = INF * 2;
     for (int i=1; i<=rr; i++) {
@@ -179,11 +175,12 @@ void inline bfs(int x) {
     memset(vis, 0, sizeof(vis));
     queue<point> q;
     d[x][k[x].y][k[x].x] = 0;
+
     k[x].fs = d[0][k[x].y][k[x].x];
     ds[x][k[x].y][k[x].x] = d[0][k[x].y][k[x].x];
-    //evar(k[x].fs);
     q.push(k[x]);
-    while(q.size() && (!finish()) ) {
+    vis[k[x].y][k[x].x] = 1;
+    while(q.size()) {
         point cur = q.front(); q.pop();
         for (int i=0; i<8; i++) {
             point tmp;
@@ -191,43 +188,53 @@ void inline bfs(int x) {
             tmp.y = cur.y + dy[i];
             tmp.s = cur.s + 1;
             if (isValid(tmp) && (!vis[tmp.y][tmp.x])) {
-                vis[cur.y][cur.x] = 1;
+                vis[tmp.y][tmp.x] = 1;
                 if (x != 0) {
                     tmp.fs = min(d[0][tmp.y][tmp.x], cur.fs);
                     ds[x][tmp.y][tmp.x] = min(ds[x][tmp.y][tmp.x], tmp.fs);
                 }
                 q.push(tmp);
                 if (d[x][tmp.y][tmp.x] > tmp.s) {
-                    d[x][tmp.y][tmp.x] = tmp.s;}
+                    d[x][tmp.y][tmp.x] = tmp.s;
+                }
             }
 
         }
 
     }
+
 }
 bool inline isValid(point& p) {
     return p.x >0 && p.x <= cc && p.y>=1 && p.y<=rr;
 }
 void ff() {
+    evar("in ff");
     memset(vis,0, sizeof(vis));
     queue<point> q;
     saber.fs = 0;
     saber.s = INF;
     q.push(saber);
-    //evar("saber: ");
+    vis[saber.y][saber.x] = 1;
     while(q.size()) {
         point cur = q.front(); q.pop();
         for (int i=0; i<8; i++) {
+
             point tmp;
             tmp.x = cur.x + sx[i];
             tmp.y = cur.y + sy[i];
             tmp.fs = min(tmp.fs, cur.fs+1);
-            //evar(tmp.fs);
-            if (isValid(tmp) &&vis[tmp.y][tmp.x] == 0) {
-                vis[cur.y][cur.x] = 1;
+            if (tmp.y == 1 && tmp.x == 1) {
+                cvar(tmp.fs);
+                cvar(cur.fs+1);
+                evar(tmp.fs);
+            }
+            if (isValid(tmp) && vis[tmp.y][tmp.x] == 0) {
+                vis[tmp.y][tmp.x] = 1;
                 q.push(tmp);
-                if (tmp.fs < d[0][cur.y][cur.x]) {
-                    d[0][cur.y][cur.x] = tmp.fs;}
+                if (tmp.fs < d[0][tmp.y][tmp.x]) {
+                    //cvar("update");
+                    //evar(tmp.fs);
+                    d[0][tmp.y][tmp.x] = tmp.fs;}
             }
         }}
 }
@@ -245,17 +252,5 @@ void init() {
     say = max(0, saber.y - 1);
     tax = min(rr, saber.x+1);
     tay = min(cc, saber.y + 1);
-
-}
-bool finish() {
-    for (int i=sax; i<=tax; i++) {
-        for (int j=say; j<=tay; j++) {
-            if (vis[i][j] != 1) {
-                return false;
-            }
-        }
-    }
-    return 0;
-
 
 }
