@@ -5,9 +5,9 @@ TASK: camelot
 */
 
 #define TASK  "camelot"
-#define LOCAL
+//#define LOCAL
 //#define SUBMIT
-#define DEBUG
+//#define DEBUG
 
 #include <vector>
 #include <list>
@@ -146,7 +146,7 @@ int main()
         bfs(i); //knights
     }
     for (int i=0; i<cnt; i++) {
-        //show(tosaber);
+        //show(d[i]);
     }
     int des1[31][31];
     memset(des1, 0, sizeof(des1));
@@ -165,7 +165,7 @@ int main()
                 best.s = des1[i][j] + tosaber[i][j];
             }}}
 
-    //cvar(best.y); evar(best.x);
+   cvar(best.y); evar(best.x);
     cout<<best.s<<endl;
     return 0;
 
@@ -206,6 +206,7 @@ void inline bfs(int x) {
     }
     while(!q.empty()) q.pop();
     // ride king and go to gathering point 
+    if (x != 0)
     kingRide(x);
 
 }
@@ -237,39 +238,36 @@ void init() {
 
 }
 void kingRide(int id) {
-    queue<point> qq;
-    for (int i=1; i<=rr; i++)
-        for (int j=1; j<=cc; j++)
-            qq.push(point(i,j));
-    while(qq.size()) {
-        point u = qq.front();
-        qq.pop();
+    int dist = INF;
+    queue<point> q1;
+    k[id].fs = 0;
+    q1.push(k[id]);
+    bool vis[maxn][maxn];
+    memset(vis, 0, sizeof(vis));
+    vis[k[id].y][k[id].x] = 1;
 
-        queue<point> q1;
-        k[id].fs = 0;
-        q1.push(k[id]);
-        bool vis[maxn][maxn];
-        memset(vis, 0, sizeof(vis));
-        vis[k[id].y][k[id].x] = 1;
-
-        while(q1.size()) {
-            point cur = q1.front(); q1.pop();
-            if (cur.x == saber.x && cur.y == saber.y) {
-                fs[id][u.y][u.x] = min(fs[id][u.y][u.x], cur.fs);
-                tosaber[u.y][u.x] = min(
-                    cur.fs + d[0][u.y][u.x] - d[id][u.y][u.x] , tosaber[u.y][u.x]); // best dist riding saber
-            }
-            for (int i=0; i<8; i++) {
-                point tmp;
-                tmp.x = cur.x + dx[i];
-                tmp.y = cur.y + dy[i];
-                tmp.fs = cur.fs + 1;
-                if (isValid(tmp) && vis[tmp.y][tmp.x] == 0) {
-                    q1.push(tmp);
-                    vis[tmp.y][tmp.x] = 1;
-                }
+    while(q1.size()) {
+        point cur = q1.front(); q1.pop();
+        if (cur.x == saber.x && cur.y == saber.y) {
+            dist = min(dist, cur.fs);
+        }
+        for (int i=0; i<8; i++) {
+            point tmp;
+            tmp.x = cur.x + dx[i];
+            tmp.y = cur.y + dy[i];
+            tmp.fs = cur.fs + 1;
+            if (isValid(tmp) && vis[tmp.y][tmp.x] == 0) {
+                q1.push(tmp);
+                vis[tmp.y][tmp.x] = 1;
             }
         }
-
     }
+
+    for (int i=1; i<=rr; i++) {
+        for (int j=1; j<=cc; j++) {
+            tosaber[i][j] = min(tosaber[i][j],
+                    dist + d[0][i][j] - d[id][i][j]);
+        }
+    }
+
 }

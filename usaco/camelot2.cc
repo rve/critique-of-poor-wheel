@@ -179,11 +179,34 @@ int main(int argc, char **argv) {
     }
     /* find best square to collect in */
     pc = cost[0][0] + kingcost[0][0];
+    int ax, ay;
+    ax = ay = -1;
  
-    for (lv = 0; lv < ncol; lv++)
-        for (lv2 = 0; lv2 < nrow; lv2++)
+    for (lv = 0; lv < ncol; lv++) {
+        for (lv2 = 0; lv2 < nrow; lv2++) {
             if (cost[lv][lv2] + kingcost[lv][lv2] < pc) /* better square? */
+            {
                 pc = cost[lv][lv2] + kingcost[lv][lv2]; 
-  fprintf (fout, "%i\n", pc);
+                ax = lv;
+                ay = lv2;
+            }
+            printf("%3d", cost[lv][lv2]);
+        }
+        printf("\n");
+    }
+    for (lv = 0; lv < ncol; lv++) {
+        for (lv2 = 0; lv2 < nrow; lv2++) {
+            if (cost[lv][lv2] + kingcost[lv][lv2] < pc) /* better square? */
+            {
+                pc = cost[lv][lv2] + kingcost[lv][lv2]; 
+                ax = lv;
+                ay = lv2;
+            }
+            printf("%3d", kingcost[lv][lv2]);
+        }
+        printf("\n");
+    }
+  //fprintf (fout, "%i\n", pc);
+  printf("%d %d \n%i\n",ay+1, ax+1 , pc);
   return 0;
 }

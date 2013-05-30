@@ -87,6 +87,7 @@ int calc()
 {
 	if (n == 1) return 0;
 	int ans = INF;
+    int ax=-1, ay=-1;
 	int sdx, sdy, edx, edy, sx, sy, ex, ey;
 	if (n < 3)
 	{
@@ -117,7 +118,11 @@ int calc()
 					{
 						tans += dist[p[k][0]][p[k][1]][x][y] + dist[x][y][dx][dy];
 						tans += MAX(ABS(x-p[0][0]), ABS(y-p[0][1]));
-						if (tans < ans) ans = tans;
+						if (tans < ans)  {
+                            ans = tans;
+                            ax = x;
+                            ay = y;
+                        }
 						tans -= dist[p[k][0]][p[k][1]][x][y] + dist[x][y][dx][dy];
 						tans -= MAX(ABS(x-p[0][0]), ABS(y-p[0][1]));
 					}
@@ -126,6 +131,7 @@ int calc()
 			}
 		}
 	}
+    cout<<"ans: "<<ay<<" "<<ax<<endl;
 	return ans;
 }
 void output()
