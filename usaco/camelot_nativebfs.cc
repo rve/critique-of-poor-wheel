@@ -137,10 +137,17 @@ int main()
     memset(d, 0x3f, sizeof(d));
     memset(ds, 0x3f, sizeof(ds));
     bfs(0); // saber 's distance
+    for (int i=1; i<=rr; i++) {
+        for (int j=1; j<=cc; j++) {
+            d[0][i][j] *= 2;
+        }
+    }
     ff();  // saber's distance (2)
-    evar(d[0][1][2]);
     for (int i=1; i<cnt; i++) {
         bfs(i); //knights
+    }
+    for (int i=0; i<=2; i++) {
+        //show(d[i]);
     }
     int des1[31][31];
     int des2[31][31];
@@ -152,9 +159,6 @@ int main()
                 des1[i][j] += d[m][i][j];
                 des2[i][j] = min(des2[i][j], ds[m][i][j]);
             }}
-    evar(d[1][1][2]);
-    evar(d[0][1][2]);
-    evar(ds[1][1][2]);
     point best;
     best.s = INF * 2;
     for (int i=1; i<=rr; i++) {
@@ -208,7 +212,6 @@ bool inline isValid(point& p) {
     return p.x >0 && p.x <= cc && p.y>=1 && p.y<=rr;
 }
 void ff() {
-    evar("in ff");
     memset(vis,0, sizeof(vis));
     queue<point> q;
     saber.fs = 0;
@@ -223,17 +226,10 @@ void ff() {
             tmp.x = cur.x + sx[i];
             tmp.y = cur.y + sy[i];
             tmp.fs = min(tmp.fs, cur.fs+1);
-            if (tmp.y == 1 && tmp.x == 1) {
-                cvar(tmp.fs);
-                cvar(cur.fs+1);
-                evar(tmp.fs);
-            }
             if (isValid(tmp) && vis[tmp.y][tmp.x] == 0) {
                 vis[tmp.y][tmp.x] = 1;
                 q.push(tmp);
                 if (tmp.fs < d[0][tmp.y][tmp.x]) {
-                    //cvar("update");
-                    //evar(tmp.fs);
                     d[0][tmp.y][tmp.x] = tmp.fs;}
             }
         }}
@@ -242,10 +238,11 @@ void show(int a[][31])
 {
     for (int i=1; i<=rr; i++) {
         for (int j=1; j<=cc; j++) {
-            cvar(a[i][j]);
+            cout<<a[i][j];
         }
-        evar("\n");
+        cout<<endl;;
     }
+        cout<<"end "<<endl;;
 }
 void init() {
     sax = max(0, saber.x-1);
