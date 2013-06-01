@@ -4,6 +4,7 @@
 *.out
 *.bin
 *.swp
+*~
 *.dSYM
 *.pyc
 *.tar.gz
