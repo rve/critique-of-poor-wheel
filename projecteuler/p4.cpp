@@ -84,31 +84,41 @@ const double  PI = acos(-1.0); //M_PI;
 const int dx[] = {-1, 0, 1, 0};
 const int dy[] = {0, 1, 0, -1};
 
-int x[maxn];
+bool inline isPalin(int n) {
+    int len = 0;
+    int sp[30];
+    do
+    {
+        sp[++len] = n % 10;
+    }while(n = n/10);
+    if (len <= 1) return true;
+    bool flag = 1;
+    for (int i=1; i<=len/2; i++)
+    {
+        if (sp[i] != sp[len - i+1]) 
+        {
+            flag = 0;
+            break;
+        }
+    }
+    return flag;
+}
 int main()
 {
 #ifdef LOCAL 
     freopen("data.in","r",stdin);  
 #endif
-    int n;
-    cin>>n;
-    if (!(n&1)) {
-        cout<<-1<<endl;
+    cout<<isPalin(1)<<endl;
+    cout<<isPalin(22)<<endl;
+    cout<<isPalin(123)<<isPalin(121)<<endl;
+    int best = 0;
+    for (int i=999; i>=100; i--) {
+        for (int j=999; j>=100; j--) {
+            if (isPalin(i*j) && i*j > best) {
+                best = i * j;
+                    }
+        }
     }
-    else {
-        cout<<0;
-        for (int i=1; i<n; i++)
-            cout<<" "<<i;
-        cout<<endl;
-        cout<<0;
-        for (int i=1; i<n; i++)
-            cout<<" "<<i;
-        cout<<endl;
-        cout<<0;
-        for (int i=1; i<n; i++)
-            cout<<" "<<(i*2)%n;
-        cout<<endl;
-    }
-    return 0;
-
+    cout<<best;
 }
+
