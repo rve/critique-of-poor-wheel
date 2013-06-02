@@ -1,12 +1,12 @@
 /*
 ID: jiongrr1
 LANG: C++
-TASK: tn
+TASK: range
 */
 
-#define TASK  "tn"
-//#define LOCAL
-//#define SUBMIT
+#define TASK  "range"
+#define LOCAL
+#define SUBMIT
 #define DEBUG
 
 #include <vector>
@@ -83,21 +83,14 @@ template<class edge> struct Graph
     vector<edge>& operator [](int t) {return adj[t];}
 };
 
-const int maxn = 260;
+const int maxn = 256;
 const int MOD = int(1e9) + 7;
 const double EPS = 1E-9;
 const double  PI = acos(-1.0); //M_PI;
 const int dx[] = {-1, 0, 1, 0};
 const int dy[] = {0, 1, 0, -1};
-int mp[maxn][maxn];
-int cnt[maxn];
-struct rect {
-    int ux, uy, dx, dy;
-    rect(int ux, int uy, int dx, int dy) : ux(ux), uy(uy), dx(dx),dy(dy) {
-    }
-};
-queue<rect> q[maxn];
-
+int dp[maxn][maxn];
+int x[maxn];
 int main()
 {
 #ifdef LOCAL 
@@ -106,4 +99,37 @@ int main()
 #ifdef SUBMIT
     freopen(TASK ".out","w",stdout);
 #endif
+    int nn;
+    cin>>nn;
+    for (int i=1; i<=nn; i++) {
+        for (int j=1; j<=nn; j++) {
+            char t;
+            cin>>t;
+            dp[i][j] = t - '0';
+        }
+    }
+    for (int k=1; k<=nn; k++) {
+    for (int i=nn-1; i>=1; i--) { 
+        for (int j=nn-1; j>=1; j--) {
+            if (dp[i][j] == 1) {
+                dp[i][j] = min(dp[i][j+1], dp[i+1][j], dp[i+1][j+1]) + 1;
+            }
+        }
+    }
+    }
+
+    memset(x, 0, sizeof(x));
+    for (int i=1; i<=nn; i++) {
+        for (int j=1; j<=nn; j++) {
+            int t = dp[i][j];
+            while(t>0) {
+                x[t--] ++;
+            }
+        }
+    }
+    for (int i=2; i<=nn; i++) {
+        if (x[i]) {
+            cout<<i<<" "<<x[i]<<endl;
+        }
+    }
 }
