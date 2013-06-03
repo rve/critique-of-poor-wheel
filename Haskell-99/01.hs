@@ -1,0 +1,1 @@
+myLast  = head . reverse 

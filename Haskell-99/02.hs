@@ -1,0 +1,1 @@
+myButLast = head . tail . reverse 
