@@ -8,6 +8,7 @@ int n, dp[100][101], a[210][3];
 
 int main()
 {
+
     while(scanf("%d",&n) != EOF)
     {
         int i, j, k;
