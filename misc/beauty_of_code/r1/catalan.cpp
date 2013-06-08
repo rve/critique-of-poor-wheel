@@ -27,10 +27,4 @@ long long Catalan(long long n)
 }
 int main()
 {
-    freopen("data.out", "w", stdout);
-    for(int i=1; i< 102; i++)
-    { 
-        int n = Catalan(i);
-        printf("%d,",n); 
-    }
 }
