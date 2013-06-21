@@ -3,6 +3,7 @@
 *.data
 *.out
 *.bin
+*.in
 *.swp
 *~
 *.dSYM
