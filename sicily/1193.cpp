@@ -1,61 +1,42 @@
+#define LOCAL
+#include <algorithm>
 #include <iostream>
-#include <string>
+#include <cstdio>
 using namespace std;
-
-void quicksort(int l,int r,int *a)
-{
-    int i,j,x;
-    if(l>=r) return;
-    i=l;
-    j=r;
-    x=a[i];
-    while(i!=j)
-    {
-        while(a[j]>x&&j>i) j--;
-        if(i<j)
-        {
-            a[i]=a[j];
-            i++;
-        }
-        while(a[i]<x&&j>i) i++;
-        if(i<j)
-        {
-            a[j]=a[i];
-            j--;
-        }
-    }
-    a[i]=x;
-    quicksort(l,j-1,a);
-    quicksort(i+1,r,a);
-}
+const int MAXN= 1100;
 int main()
 {
-    long int n,f,b,fi,bi;
-    int t,time,i,j;
-    int p,q;  
-    // p times q person
-    int a[1000];
-    cin>>t;
-    for(i=0;i<t;i++)
-    {
-        cin>>n>>f>>b;
-        memset(a,-1,sizeof(a));
-        for(j=0;j<n;j++)
-        {
-            cin>>fi>>bi;
-            a[j]=fi;
-            if(bi==1) a[j]=2*f-a[j];
+#ifdef LOCAL 
+    freopen("data.in","r",stdin);  
+#endif
+    int T;
+    scanf("%d", &T);
+    while(T--) {
+        int s[MAXN];
+        int n, f, b;
+        scanf("%d%d%d", &n, &f, &b);
+        for (int i=0; i<n; i++) {
+            int t;
+            scanf("%d%d", &s[i], &t);
+            if (t == 0) {
+                s[i] = s[i] + f;
+            }
+            else {
+                s[i] = 3*f - s[i];
+            }
         }
-        quicksort(0,n-1,a);
-        p=b/n;
-        q=b%n;
-        if(q==0) q=n-1;
-        else{
-            q--;
-            p++;
+        int ans1 = b/n * 2 * f;
+        sort(s, s+n);
+        int rem = b % n;
+        if (rem == 0) {
+            rem  = n;
+            ans1 -= f * 2;
         }
-        a[q]+=p*2*f-f;
-        cout<<a[q]<<endl;
+        int ans2 = 0;
+        for (int i=0; i<rem; i++) {
+            ans2 = max(ans2,s[i]);
+        }
+        cout<<ans1+ans2<<endl;
     }
-    return 1;
-}
+
+}                                 
