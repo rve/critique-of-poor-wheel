@@ -82,47 +82,27 @@ const int MOD = int(1e9) + 7;
 const double EPS = 1E-9;
 const double  PI = acos(-1.0); //M_PI;
 const int dx[] = {-1, 0, 1, 0};
+
 const int dy[] = {0, 1, 0, -1};
+int num[105];
 
-int x[maxn] = {-1,1,2,3,4};
-int nn = 4;
-int ans[maxn];
-int vis[maxn];
-void dfs(int d)
-{
-    if  (d == nn+1) {
-        for (int i=1; i<=nn; i++) 
-            cout<<ans[i]<<" ";
-        cout<<endl;
-        return;
+int main() {
+    int n, m, i, s;
+    cin>>n>>m;
+    int t=0;
+    s = n;
+    while(s) {
+        num[t++] = s % m;
+        s /= m;
     }
-    for (int i=1; i<=nn; i++) 
-        if (vis[i] == 0)
-    {
-        ans[d] = x[i];
-
-        vis[i] = 1;
-        dfs(d+1);
-        vis[i] = 0;
+    t --;
+    for (int i=t; i>=0; i--) {
+        if (num[i] > 9) {
+            printf("%c", num[i] - 10 + 'A');
+        }
+        else {
+            printf("%d", num[i]);
+        }
     }
-} 
-// print {0,1..n-1} subset
-void dfs1(int n, int s) {
-    for (int i=0; i<n; i++) {
-        if (s & (1<<i)) printf("%d ", i);
-        printf("\n");
-    }
-    for (int i=0; i<(1<<n); i++) {
-        dfs1(n, i);
-    }
-}
-int main()
-{
-#ifdef LOCAL 
-    freopen("data.in","r",stdin);  
-#endif
-    memset(vis, 0, sizeof(vis));
-    //dfs(1);
-    dfs1(2, 0);
 }
 
